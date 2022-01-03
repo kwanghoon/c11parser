@@ -140,7 +140,9 @@ lexerSpec = LexerSpec
         ("\n", skip),
 --        ("\\/\\*(\\*(?!\\/)|[^*])*\\*\\/", skip),   -- rewritten /* as \/\*(\*(?!\/)|[^*])*\*\/
         ("//" ++ zeroOrMore "^\\n" ++ "\\n", skip), -- rewritten // as this
-        
+
+        -- ("#" ++ zeroOrMore "^(\\n)" ++ "\\n", skip), -- ignore preprocessed lines Todo: Make it work!
+
         (integer_constant, mkFn CONSTANT),
         (decimal_floating_constant, mkFn CONSTANT),
         (hexadecimal_floating_constant, mkFn CONSTANT),
@@ -149,10 +151,10 @@ lexerSpec = LexerSpec
         --  error "These characters form a preprocessor number, but not a constant"),
         
         -- (("[LuU]" <|> "") ++ "'", mkFn CONSTANT ),
-        (opt "[LuU]" ++ "'[^']*'", mkFn CONSTANT ),   -- rewritten as "\"[^\"]*\""
+        (opt "[LuU]" ++ "'[^']*'", mkFn CONSTANT ),   -- rewritten as "\"[^\"]*\""  Todo: \'
         
         -- (("[LuU]" <|> "" <|> "u8") ++ "\"",  mkFn STRING_LITERAL),  
-        (opt ("[LuU]" <|> "u8") ++ "\"[^\"]*\"",  mkFn STRING_LITERAL),  -- rewritten as "\"[^\"]*\""
+        (opt ("[LuU]" <|> "u8") ++ "\"[^\"]*\"",  mkFn STRING_LITERAL),  -- rewritten as "\"[^\"]*\""  Todo: \"
         
         ("\\.\\.\\.", mkFn ELLIPSIS ),
         ("\\+=", mkFn ADD_ASSIGN ),

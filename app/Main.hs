@@ -77,7 +77,7 @@ computeCand_ isSimpleMode programTextUptoCursor programTextAfterCursor = do
   (line, column, terminalListUptoCursor)  <- lexingWithLineColumn lexerSpec 1 1 programTextUptoCursor
   
   ast <-
-    (parsing True parserSpec1 terminalListUptoCursor
+    (parsing True parserSpec terminalListUptoCursor
       `catch` \e -> case e :: ParseError Token AST of  _ -> throw (ParseErrorWithLineCol line column e))
 
   successfullyParsed
