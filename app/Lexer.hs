@@ -133,7 +133,7 @@ escape_sequence =
 lexerSpec :: LexerSpec Token
 lexerSpec = LexerSpec
   {
-    endOfToken    = END_OF_TOKEN,
+    endOfToken    = EOF,
     lexerSpecList =
       [
         (oneOrMore whitespace_char_no_newline, skip),

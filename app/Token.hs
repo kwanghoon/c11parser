@@ -4,7 +4,7 @@ import Prelude hiding(EQ, LT, GT)
 import TokenInterface
 
 data Token =
-    END_OF_TOKEN
+    EOF
   | NAME
   | VARIABLE
   | TYPE
@@ -105,7 +105,7 @@ data Token =
 
 tokenStrList :: [(Token,String)]
 tokenStrList =
-  [ (END_OF_TOKEN, "$"),
+  [ (EOF, "$"),
     
     (NAME, "NAME"),
     (VARIABLE, "VARIABLE"), (TYPE, "TYPE"),

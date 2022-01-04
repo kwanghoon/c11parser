@@ -1,5 +1,7 @@
 module Parser where
 
+-- Todo: implied production rules !!
+
 import Attrs
 import CommonParserUtil
 import Token
@@ -33,7 +35,7 @@ toProdRule (x:xs) = toProdRule [x] ++ tpr xs
 -- | X
 --     {}
 
-ioption :: String -> [String]   -- Todo: %inline?
+ioption :: String -> [String]   -- Todo: %inline? Done!
 ioption x =
   map toProdRule $
     map (nonTerminal "ioption" [x] :)
@@ -83,7 +85,7 @@ list_eq1 a b =
 -- | B list_ge1(A, B)
 --     {}
 
-list_ge1 a b =
+list_ge1 a b =   -- Todo: 함수에서 언급하는 Nonterminal에 대한 생산 규칙도 모두 나열!
   map toProdRule $
     map (nonTerminal "list_ge1" [a,b] :)
       [ [ a, nonTerminal "list" [b] ]
@@ -234,20 +236,34 @@ parserSpec = ParserSpec
       -- | i = var_name
       --     { i }
 
-      ruleWithNoAction "general_identifier -> typedef_name var_name",
+      ruleWithNoAction "general_identifier -> typedef_name",
+      
+      ruleWithNoAction "general_identifier -> var_name",
       
       -- save_context:
       -- | (* empty *)
       --     { save_context () }
 
-      ruleWithNoAction "save_context -> ",
-      
+      ruleWithNoAction "save_context -> "
+      ]
+
+      ++
+
       -- scoped(X):
       -- | ctx = save_context x = X
       --     { restore_context ctx; x }
 
       -- ==> Defined above
       
+      scoped "parameter_type_list" ++
+      scoped "compound_statement"  ++
+      scoped "selection_statement" ++
+      scoped "iteration_statement" ++
+      scoped "statement"           ++
+      scoped "parameter_type_list" ++
+
+      [
+        
       -- (* [declarator_varname] and [declarator_typedefname] are like [declarator]. In
       --    addition, they have the side effect of introducing the declared identifier as
       --    a new variable or typedef name in the current context. *)
@@ -262,6 +278,8 @@ parserSpec = ParserSpec
       -- | d = declarator
       --     { declare_typedefname (identifier d); d }
 
+      ruleWithNoAction "declarator_typedefname -> declarator",
+      
       -- (* End of the helpers, and beginning of the grammar proper: *)
 
       -- primary_expression:
@@ -319,35 +337,21 @@ parserSpec = ParserSpec
 
       ruleWithNoAction "postfix_expression -> primary_expression",
 
-      ruleWithNoAction "postfix_expression -> postfix_expression [ expression ]"
-      ]
+      ruleWithNoAction "postfix_expression -> postfix_expression [ expression ]",
 
-      ++
+      ruleWithNoAction $ "postfix_expression -> postfix_expression ( " ++ nonTerminal "option" [ "argument_expression_list" ] ++ " )",
 
-      [ ruleWithNoAction $ "postfix_expression -> postfix_expression ( " ++ a_e_l ++ " )"
-      | a_e_l <- option( "argument_expression_list" ) ]
-
-      ++
-
-      [
       ruleWithNoAction "postfix_expression -> postfix_expression . general_identifier",
 
       ruleWithNoAction "postfix_expression -> postfix_expression -> general_identifier",
 
       ruleWithNoAction "postfix_expression -> postfix_expression ++",
 
-      ruleWithNoAction "postfix_expression -> postfix_expression --"
-      ]
+      ruleWithNoAction "postfix_expression -> postfix_expression --",
 
-      ++
+      ruleWithNoAction $ "postfix_expression -> ( type_name ) { initializer_list " ++ nonTerminal "option" [ "comma" ] ++ " }",
+      
 
-      [ ruleWithNoAction $
-          "postfix_expression -> ( type_name ) { initializer_list " ++ comma ++ " }"
-      | comma <- option ( "," ) ]
-
-      ++
-
-      [
       -- argument_expression_list:
       -- | assignment_expression
       -- | argument_expression_list "," assignment_expression
@@ -626,8 +630,7 @@ parserSpec = ParserSpec
       -- | conditional_expression
       --     {}
 
-      ruleWithNoAction "constant_expression -> conditional_expression"
-      ]
+      ruleWithNoAction "constant_expression -> conditional_expression",
 
       ++
       
@@ -642,23 +645,20 @@ parserSpec = ParserSpec
       -- | static_assert_declaration
       --     {}
 
-      [ ruleWithNoAction $ "declaration -> declaration_specifiers " ++ optidl
-      | idl <- init_declarator_list "declarator_varname"
-      , optidl <- option idl ]
+      ruleWithNoAction $ toProdRule
+        [ "declaration",
+          "declaration_specifiers",
+          nonTerminal "option"
+           [ nonTerminal "init_declarator_list" [ "declarator_varname" ] ], ";" ],
 
-      ++
-      
-      [ ruleWithNoAction $ "declaration -> declaration_specifiers_typedef " ++ optidl
-      | idl <- init_declarator_list "declarator_typedefname"
-      , optidl <- option idl ]
+      ruleWithNoAction $ toProdRule
+        [ "declaration",
+          "declaration_specifiers_typedef",
+          nonTerminal "option"
+             [ nonTerminal "init_declarator_list" [ "declarator_typedefname" ] ], ";" ],
 
-      ++
+      ruleWithNoAction "declaration -> static_assert_declaration",
 
-      [ ruleWithNoAction "declaration -> static_assert_declaration" ]
-
-      ++
-      
-      [
       
       -- (* [declaration_specifier] corresponds to one declaration specifier in the C18
       --    standard, deprived of "typedef" and of type specifiers. *)
@@ -676,10 +676,8 @@ parserSpec = ParserSpec
         
       ruleWithNoAction "declaration_specifier -> function_specifier",
         
-      ruleWithNoAction "declaration_specifier -> alignment_specifier"
-      ]
+      ruleWithNoAction "declaration_specifier -> alignment_specifier",
 
-      ++
 
       -- (* [declaration_specifiers] requires that at least one type specifier be
       --    present, and, if a unique type specifier is present, then no other type
@@ -704,15 +702,13 @@ parserSpec = ParserSpec
       -- | list_ge1(type_specifier_nonunique, declaration_specifier)
       --     {}
 
-      [ ruleWithNoAction $ "declaration_specifiers -> " ++ le
-      | le <- list_eq1 "type_specifier_unique" "declaration_specifier" ]
+      ruleWithNoAction $ toProdRule
+        [ "declaration_specifiers",
+          nonTerminal "list_eq1" ["type_specifier_unique", "declaration_specifier" ] ], 
 
-      ++
-
-      [ ruleWithNoAction $ "declaration_specifiers -> " ++ lg
-      | lg <- list_ge1 "type_specifier_nonunique" "declaration_specifier" ]
-
-      ++
+      ruleWithNoAction $ toProdRule
+        [ "declaration_specifiers",
+          nonTerminal "list_ge1" ["type_specifier_nonunique", "declaration_specifier" ] ],
 
       -- (* [declaration_specifiers_typedef] is analogous to [declaration_specifiers],
       --    but requires the ["typedef"] keyword to be present (exactly once). *)
@@ -722,13 +718,13 @@ parserSpec = ParserSpec
       -- | list_eq1_ge1("typedef", type_specifier_nonunique, declaration_specifier)
       --     {}
 
-      [ ruleWithNoAction $ "declaration_specifiers_typedef -> " ++ lee
-      | lee <- list_eq1_eq1 "typedef" "type_specifier_unique" "declaration_specifier" ]
+      ruleWithNoAction $ toProdRule
+        [ "declaration_specifiers_typedef",
+          nonTerminal "list_eq1_eq1" ["typedef", "type_specifier_unique", "declaration_specifier"] ],
 
-      ++
-
-      [ ruleWithNoAction $ "declaration_specifiers_typedef -> " ++ leg
-      | leg <- list_eq1_ge1 "typedef" "type_specifier_nonunique" "declaration_specifier" ]
+      ruleWithNoAction $ toProdRule
+        [ "declaration_specifiers_typedef",
+          nonTerminal "list_eq1_ge1" ["typedef", "type_specifier_nonunique", "declaration_specifier" ] ]
 
       ++
 
@@ -742,6 +738,9 @@ parserSpec = ParserSpec
 
       -- ==> Defined above
 
+      init_declarator_list "declarator_varname" ++
+      init_declarator_list "declarator_typedefname" ++
+
       -- init_declarator(declarator):
       -- | declarator
       -- | declarator "=" c_initializer
@@ -749,6 +748,9 @@ parserSpec = ParserSpec
 
       -- ==> Defined above
 
+      init_declarator "declarator_varname" ++
+      init_declarator "declarator_typedefname" ++
+      
       [
       -- (* [storage_class_specifier] corresponds to storage-class-specifier in the
       --    C18 standard, deprived of ["typedef"] (which receives special treatment). *)
@@ -790,6 +792,8 @@ parserSpec = ParserSpec
 
       ruleWithNoAction "type_specifier_nonunique -> short",
 
+      ruleWithNoAction "type_specifier_nonunique -> int",
+
       ruleWithNoAction "type_specifier_nonunique -> long",
 
       ruleWithNoAction "type_specifier_nonunique -> float",
@@ -825,27 +829,21 @@ parserSpec = ParserSpec
       ruleWithNoAction "type_specifier_unique -> enum_specifier",
       
       ruleWithNoAction "type_specifier_unique -> typedef_name_spec"
-      ]
 
-      ++
-      
       
       -- struct_or_union_specifier:
       -- | struct_or_union general_identifier? "{" struct_declaration_list "}"
       -- | struct_or_union general_identifier
       --     {}
 
-      [ ruleWithNoAction $
-          "struct_or_union_specifier -> struct_or_union " ++ gi ++ "{ struct_declaration_list }"
-      | gi <- option "general_identifier" ]
+      ruleWithNoAction $ toProdRule
+        [ "struct_or_union_specifier",
+          "struct_or_union",
+          nonTerminal "option" ["general_identifier"], "{", "struct_declaration_list" "}" ],
 
-      ++
+      ruleWithNoAction "struct_or_union_specifier -> struct_or_union general_identifier",
 
-      [ ruleWithNoAction "struct_or_union_specifier -> struct_or_union general_identifier" ]
-
-      ++
-
-      [
+      
       -- struct_or_union:
       -- | "struct"
       -- | "union"
@@ -863,23 +861,21 @@ parserSpec = ParserSpec
       
       ruleWithNoAction "struct_declaration_list -> struct_declaration",
       
-      ruleWithNoAction "struct_declaration_list -> struct_declaration_list struct_declaration"]
-
-      ++
+      ruleWithNoAction "struct_declaration_list -> struct_declaration_list struct_declaration",
+      
 
       -- struct_declaration:
       -- | specifier_qualifier_list struct_declarator_list? ";"
       -- | static_assert_declaration
       --     {}
 
-      [ ruleWithNoAction $ "struct_declaration -> specifier_qualifier_list " ++ sdl ++ " ;"
-      | sdl <- option "struct_declarator_list" ]
+      ruleWithNoAction $ toProdRule
+        [ "struct_declaration",
+          "specifier_qualifier_list",
+          nonTerminal "option" ["struct_declarator_list"], ";" ],
 
-      ++
-
-      [ ruleWithNoAction "struct_declaration -> static_assert_declaration" ]
+      ruleWithNoAction "struct_declaration -> static_assert_declaration",
       
-      ++
   
       -- (* [specifier_qualifier_list] is as in the standard, except it also encodes the
       --    same constraint as [declaration_specifiers] (see above). *)
@@ -889,14 +885,22 @@ parserSpec = ParserSpec
       -- | list_ge1(type_specifier_nonunique, type_qualifier | alignment_specifier {})
       --     {}
 
-      [ ruleWithNoAction $ "specifier_qualifier_list -> " ++ le
-      | sndarg <- [ "type_qualifier", "alignment_specifier" ]
-      , le <- list_eq1 "type_specifier_unique" sndarg
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "specifier_qualifier_list",
+          nonTerminal "list_eq1" ["type_specifier_unique", "type_qualifier"] ],
+        
+      ruleWithNoAction $ toProdRule
+        [ "specifier_qualifier_list",
+          nonTerminal "list_eq1" ["type_specifier_unique", "alignment_specifier"] ],
 
-      ++
-
-      [
+      ruleWithNoAction $ toProdRule
+        [ "specifier_qualifier_list",
+          nonTerminal "list_ge1" ["type_specifier_nonunique", "type_qualifier"] ],
+        
+      ruleWithNoAction $ toProdRule
+        [ "specifier_qualifier_list",
+          nonTerminal "list_ge1" ["type_specifier_nonunique", "alignment_specifier"] ],
+      
         
       -- struct_declarator_list:
       -- | struct_declarator
@@ -905,43 +909,33 @@ parserSpec = ParserSpec
 
       ruleWithNoAction "struct_declarator_list -> struct_declarator",
 
-      ruleWithNoAction "struct_declarator_list -> struct_declarator_list , struct_declarator"
-      ]
+      ruleWithNoAction "struct_declarator_list -> struct_declarator_list , struct_declarator",
 
-      ++
 
       -- struct_declarator:
       -- | declarator
       -- | declarator? ":" constant_expression
       --     {}
 
-      [ ruleWithNoAction "struct_declarator -> declarator" ]
+      ruleWithNoAction "struct_declarator -> declarator",
 
-      ++
+      ruleWithNoAction $ toProdRule
+        [ "struct_declarator",
+          nonTerminal "option" ["declarator"], ":", "constant_expression" ],
 
-      [ ruleWithNoAction $ "struct_declarator -> " ++ d ++ " : constant_expression"
-      | d <- option "declarator"
-      ]
-
-      ++
 
       -- enum_specifier:
       -- | "enum" general_identifier? "{" enumerator_list ","? "}"
       -- | "enum" general_identifier
       --     {}
 
-      [ ruleWithNoAction $ "enum_specifier -> enum " ++ g ++ "{ enumerator_list " ++ comma ++ " }"
-      | g <- option "general_identifier"
-      , comma <- option ","
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "enum_specifier",
+          "enum", nonTerminal "option" ["general_identifier"], "{", "enumerator_list",
+          nonTerminal "option" [","], "}" ],
 
-      ++
+      ruleWithNoAction "enum_specifier -> enum general_identifier",
 
-      [ ruleWithNoAction "enum_specifier -> enum general_identifier" ]
-
-      ++
-
-      [
         
       -- enumerator_list:
       -- | enumerator
@@ -978,6 +972,7 @@ parserSpec = ParserSpec
       ruleWithNoAction "atomic_type_specifier -> _Atomic ( type_name )",
 
       ruleWithNoAction "atomic_type_specifier -> _Atomic ATOMIC_LPAREN type_name )",
+
       
       -- type_qualifier:
       -- | "const"
@@ -1011,20 +1006,16 @@ parserSpec = ParserSpec
 
       ruleWithNoAction "alignment_specifier -> _Alignas ( type_name )",
       
-      ruleWithNoAction "alignment_specifier -> _Alignas ( constant_expression )"
-      ]
-
-      ++
+      ruleWithNoAction "alignment_specifier -> _Alignas ( constant_expression )",
 
       
       -- declarator:
       -- | ioption(pointer) d = direct_declarator
       --     { other_declarator d }
 
-      [ ruleWithNoAction $ "declarator -> " ++ p ++ " direct_declarator"
-      | p <- ioption "pointer"  ]
-
-      ++
+      ruleWithNoAction "declarator -> d = direct_declarator",
+      ruleWithNoAction "declarator -> pointer d = direct_declarator",
+      
   
       -- (* The occurrences of [save_context] inside [direct_declarator] and
       --    [direct_abstract_declarator] seem to serve no purpose. In fact, they are
@@ -1047,144 +1038,113 @@ parserSpec = ParserSpec
       -- | d = direct_declarator "(" save_context identifier_list? ")"
       --     { other_declarator d }
 
-      [ ruleWithNoAction "direct_declarator -> general_identifier"
-      , ruleWithNoAction "direct_declarator -> ( save_context  declarator )"
-      ]
-
-      ++
-
-      [ ruleWithNoAction $
-          "direct_declarator -> direct_declarator [ " ++ tql ++ " " ++ ae ++ " ]"
-      | tql <- option "type_qualifier_list"
-      , ae <- option "assignment_expression"
-      ]
-
-      ++
-
-      [ ruleWithNoAction $
-          "direct_declarator -> direct_declarator [ static " ++ tql ++ " assignment_expression ]"
-      | tql <- option "type_qualifier_list"
-      ]
+      ruleWithNoAction "direct_declarator -> general_identifier",
       
-      ++
-
-      [ ruleWithNoAction
-          "direct_declarator -> direct_declarator [ type_qualifier_list static assignment_expression ]"
-      ]
-
-      ++
-
-      [ ruleWithNoAction $
-          "direct_declarator -> direct_declarator [ " ++ tql ++ " * ]"
-      | tql <- option "type_qualifier_list"
-      ]
+      ruleWithNoAction "direct_declarator -> ( save_context declarator )",
       
-      ++
+      ruleWithNoAction $ toProdRule
+        [ "direct_declarator",
+          "direct_declarator", "[", nonTerminal "option" ["type_qualifier_list"],
+           nonTerminal "option" ["assignment_expression"], "]" ],
 
-      [ ruleWithNoAction $
-          "direct_declarator -> direct_declarator ( " ++ ptl ++ " )"
-      | ptl <- scoped "parameter_type_list"
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "direct_declarator",
+          "direct_declarator", "[", "static",
+          nonTerminal "option" ["type_qualifier_list"], " assignment_expression", "]" ],
 
-      ++
+      ruleWithNoAction "direct_declarator -> direct_declarator [ type_qualifier_list static assignment_expression ]",
 
-      [ ruleWithNoAction $
-          "direct_declarator -> direct_declarator ( save_context " ++ il ++ " )"
-      | il <- option "identifier_list"
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "direct_declarator", "direct_declarator", "[",
+          nonTerminal "option" ["type_qualifier_list"], "*", "]" ],
 
-      ++
+      ruleWithNoAction $ toProdRule
+        [ "direct_declarator", "direct_declarator", "(",
+          nonTerminal "scoped" ["parameter_type_list"], ")" ],
+
+      ruleWithNoAction $ toProdRule
+        [ "direct_declarator",
+          "direct_declarator", "(", "save_context",
+          nonTerminal "option" ["identifier_list"], ")" ],
+
       
       -- pointer:
       -- | "*" type_qualifier_list? pointer?
       --     {}
 
-      [ ruleWithNoAction $ "pointer -> * " ++ tql ++ " " ++ p
-      | tql <- option "type_qualifier_list"
-      , p <- option "pointer"
-      ]
-  
-      ++
+      ruleWithNoAction $ toProdRule
+        [ "pointer",
+          "*", nonTerminal "option" ["type_qualifier_list"], nonTerminal "option" ["pointer"] ],
 
       
       -- type_qualifier_list:
       -- | type_qualifier_list? type_qualifier
       --     {}
 
-      [ ruleWithNoAction $ "type_qualifier_list -> " ++ tql ++ " type_qualifier"
-      | tql <- option "type_qualifier_list"
-      ]
-  
-      ++
+      ruleWithNoAction $ toProdRule
+        [ "type_qualifier_list",
+          nonTerminal "option" ["type_qualifier_list"], " type_qualifier" ],
+
       
       -- parameter_type_list:
       -- | parameter_list option("," "..." {}) ctx = save_context
       --     { ctx }
 
-      [ ruleWithNoAction $ "parameter_type_list -> parameter_list " ++ commadots ++ " save_context"
-      | commadots <- option ", ..."
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "parameter_type_list",
+          "parameter_list", nonTerminal "option" [", ..."], "save_context" ],
   
-      ++
       
       -- parameter_list:
       -- | parameter_declaration
       -- | parameter_list "," parameter_declaration
       --     {}
 
-      [ ruleWithNoAction "parameter_list -> parameter_declaration",
-        ruleWithNoAction "parameter_list -> parameter_list , parameter_declaration"
-      ]
+      ruleWithNoAction "parameter_list -> parameter_declaration",
+      ruleWithNoAction "parameter_list -> parameter_list , parameter_declaration",
 
-      ++
-
+      
       -- parameter_declaration:
       -- | declaration_specifiers declarator_varname
       -- | declaration_specifiers abstract_declarator?
       --     {}
 
-      [ ruleWithNoAction "parameter_declaration -> declaration_specifiers declarator_varname" ]
+      ruleWithNoAction "parameter_declaration -> declaration_specifiers declarator_varname",
 
-      ++
+      ruleWithNoAction $ toProdRule
+        [ "parameter_declaration",
+          "declaration_specifiers", nonTerminal "option" ["abstract_declarator"] ],
 
-      [ ruleWithNoAction $ "parameter_declaration -> declaration_specifiers " ++ ad
-      | ad <- option "abstract_declarator" ]
-
-      ++
 
       -- identifier_list:
       -- | var_name
       -- | identifier_list "," var_name
       --     {}
 
-      [ ruleWithNoAction "identifier_list -> var_name"
-      , ruleWithNoAction "identifier_list -> identifier_list , var_name" ]
+      ruleWithNoAction "identifier_list -> var_name",
+      ruleWithNoAction "identifier_list -> identifier_list , var_name",
 
-      ++
 
       -- type_name:
       -- | specifier_qualifier_list abstract_declarator?
       --     {}
 
-      [ ruleWithNoAction $ "type_name -> specifier_qualifier_list " ++ ad
-      | ad <- option "abstract_declarator"
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "type_name",
+          "specifier_qualifier_list ", nonTerminal "option" ["abstract_declarator"] ],
 
-      ++
 
       -- abstract_declarator:
       -- | pointer
       -- | ioption(pointer) direct_abstract_declarator
       --     {}
 
-      [ ruleWithNoAction "abstract_declarator -> pointer" ]
+      ruleWithNoAction "abstract_declarator -> pointer",
+      
+      ruleWithNoAction "abstract_declarator -> direct_abstract_declarator",
+      
+      ruleWithNoAction "abstract_declarator -> pointer direct_abstract_declarator",
 
-      ++
-
-      [ ruleWithNoAction $ "abstract_declarator -> " ++ p ++ " direct_abstract_declarator"
-      | p <- ioption "pointer" ]
-
-      ++
 
       -- direct_abstract_declarator:
       -- | "(" save_context abstract_declarator ")"
@@ -1195,101 +1155,96 @@ parserSpec = ParserSpec
       -- | ioption(direct_abstract_declarator) "(" scoped(parameter_type_list)? ")"
       --     {}
 
-      [ ruleWithNoAction "direct_abstract_declarator -> ( save_context abstract_declarator )" ]
+      --
+      ruleWithNoAction "direct_abstract_declarator -> ( save_context abstract_declarator )",
 
-      ++
+      -- 
+      ruleWithNoAction $ toProdRule
+        [ "direct_abstract_declarator",
+          nonTerminal "option" ["direct_abstract_declarator"],
+          "[", nonTerminal "option" ["assignment_expression"], "]" ],
 
-      [ ruleWithNoAction $ "direct_abstract_declarator -> " ++ dad ++ " [ " ++ tql ++ " " ++ ae ++ " ]"
-      | dad <- option "direct_abstract_declarator"
-      , tql <- ioption "type_qualifier_list"
-      , ae  <- option "assignment_expression"
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "direct_abstract_declarator",
+          nonTerminal "option" ["direct_abstract_declarator"],
+          "[", "type_qualifier_list", nonTerminal "option" ["assignment_expression"], "]" ],
 
-      ++
+      --
+      ruleWithNoAction $ toProdRule
+        [ "direct_abstract_declarator",
+          nonTerminal "option" ["direct_abstract_declarator"],
+          "[", "static",
+          nonTerminal "option" ["type_qualifier_list"], "assignment_expression", "]" ],
 
-      [ ruleWithNoAction $ "direct_abstract_declarator -> " ++ dad ++ " [ static " ++ tql ++ " assignment_expression ]"
-      | dad <- option "direct_abstract_declarator"
-      , tql <- ioption "type_qualifier_list"
-      ]
+      --
+      ruleWithNoAction $ toProdRule
+        [ "direct_abstract_declarator",
+          nonTerminal "option" ["direct_abstract_declarator"],
+          "[", "type_qualifier_list", "static", "assignment_expression", "]" ],
 
-      ++
+      --
+      ruleWithNoAction $ toProdRule
+        [ "direct_abstract_declarator",
+          nonTerminal "option" ["direct_abstract_declarator"], "[", "*", "]" ],
 
-      [ ruleWithNoAction $ "direct_abstract_declarator -> " ++ dad ++ " [ type_qualifier_list static assignment_expression ]"
-      | dad <- option "direct_abstract_declarator"
-      ]
+      --
+      ruleWithNoAction $ toProdRule
+        [ "direct_abstract_declarator",
+          "(", nonTerminal "scoped" ["parameter_type_list"], ")" ],
 
-      ++
+      --
+      ruleWithNoAction $ toProdRule
+        [ "direct_abstract_declarator",
+          "direct_abstract_declarator", "(", nonTerminal "scoped" ["parameter_type_list"], ")" ],
 
-      [ ruleWithNoAction $ "direct_abstract_declarator -> " ++ dad ++ " [ * ]"
-      | dad <- option "direct_abstract_declarator"
-      ]
       
-      ++
-
-      [ ruleWithNoAction $ "direct_abstract_declarator -> ( " ++ ptl ++ " )"
-      | dad <- ioption "direct_abstract_declarator"
-      , ptl <- scoped "parameter_type_list"
-      ]
-      
-      ++
-
-  
       -- c_initializer:
       -- | assignment_expression
       -- | "{" initializer_list ","? "}"
       --     {}
 
-      [ ruleWithNoAction "c_initializer -> assignment_expression" ]
+      ruleWithNoAction "c_initializer -> assignment_expression",
 
-      ++
-      
-      [ ruleWithNoAction $ "c_initializer -> { initializer_list " ++ comma ++ " }"
-      | comma <- option ","
-      ]
-  
-      ++
+      ruleWithNoAction $ toProdRule
+        [ "c_initializer",
+          "{", "initializer_list", nonTerminal "option" [","], "}" ],
+
       
       -- initializer_list:
       -- | designation? c_initializer
       -- | initializer_list "," designation? c_initializer
       --     {}
 
-      [ ruleWithNoAction $ "initializer_list -> " ++ d ++ " c_initializer"
-      | d <- option "designation"
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "initializer_list",
+          nonTerminal "option" ["designation"], " c_initializer"],
 
-      ++
 
-      [ ruleWithNoAction $ "initializer_list -> initializer_list , " ++ d ++ " c_initializer"
-      | d <- option "designation"
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "initializer_list",
+          "initializer_list", ",", nonTerminal "option" ["designation"],  "c_initializer" ],
 
-      ++
 
       -- designation:
       -- | designator_list "="
       --     {}
 
-      [ ruleWithNoAction "designation -> designator_list =" ]
+      ruleWithNoAction "designation -> designator_list =",
 
-      ++
 
       -- designator_list:
       -- | designator_list? designator
       --     {}
 
-      [ ruleWithNoAction $ "designator_list -> " ++ d ++ " designator"
-      | d <- option "designator_list"
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "designator_list",
+          nonTerminal "option" ["designator_list"], " designator" ],
 
-      ++
       
       -- designator:
       -- | "[" constant_expression "]"
       -- | "." general_identifier
       --     {}
-
-      [
 
       ruleWithNoAction "designator -> [ constant_expression ]",
       ruleWithNoAction "designator -> . general_identifier",
@@ -1299,11 +1254,8 @@ parserSpec = ParserSpec
       -- | "_Static_assert" "(" constant_expression "," STRING_LITERAL ")" ";"
       --     {}
 
-      ruleWithNoAction "static_assert_declaration -> _Static_assert ( constant_expression , STRING_LITERAL ) ;"
+      ruleWithNoAction "static_assert_declaration -> _Static_assert ( constant_expression , STRING_LITERAL ) ;",
 
-      ]
-
-      ++
 
       -- statement:
       -- | labeled_statement
@@ -1314,35 +1266,21 @@ parserSpec = ParserSpec
       -- | jump_statement
       --     {}
 
-      [ ruleWithNoAction "statement -> labeled_statement" ]
+      ruleWithNoAction "statement -> labeled_statement",
 
-      ++
+      ruleWithNoAction $ toProdRule
+        [ "statement", nonTerminal "scoped" ["compound_statement"] ],
 
-      [ ruleWithNoAction $ "statement -> " ++ cs
-      | cs <- scoped "compound_statement"
-      ]
+      ruleWithNoAction "statement -> expression_statement",
 
-      ++
+      ruleWithNoAction $ toProdRule
+        [ "statement", nonTerminal "scoped" ["selection_statement"] ],
 
-      [ ruleWithNoAction "statement -> expression_statement" ]
-
-      ++
-
-      [ ruleWithNoAction $ "statement -> " ++ ss
-      | ss <- scoped "selection_statement"
-      ] 
+      ruleWithNoAction $ toProdRule
+        [ "statement", nonTerminal "scoped" ["iteration_statement"] ],
       
-      ++
-
-      [ ruleWithNoAction $ "statement -> " ++ is
-      | is <- scoped "iteration_statement"
-      ] 
+      ruleWithNoAction "statement -> jump_statement",
       
-      ++
-
-      [ ruleWithNoAction "statement -> jump_statement" ]
-      
-      ++
   
       -- labeled_statement:
       -- | general_identifier ":" statement
@@ -1350,53 +1288,42 @@ parserSpec = ParserSpec
       -- | "default" ":" statement
       --     {}
 
-      [ ruleWithNoAction "labeled_statement -> general_identifier : statement"
-      , ruleWithNoAction "labeled_statement -> case constant_expression : statement"
-      , ruleWithNoAction "labeled_statement -> default : statement"
-      ]
+      ruleWithNoAction "labeled_statement -> general_identifier : statement",
+      ruleWithNoAction "labeled_statement -> case constant_expression : statement",
+      ruleWithNoAction "labeled_statement -> default : statement",
 
-      ++
 
       -- compound_statement:
       -- | "{" block_item_list? "}"
       --     {}
 
-      [ ruleWithNoAction $ "compound_statement -> { " ++ bil ++ " }"
-      | bil <- option "block_item_list"
-      ]
-
-      ++
+      ruleWithNoAction $ toProdRule
+        [ "compound_statement", "{", nonTerminal "option" ["block_item_list"], "}" ],
 
       -- block_item_list:
       -- | block_item_list? block_item
       --     {}
 
-      [ ruleWithNoAction $ "block_item_list -> " ++ bil  ++ " block_item"
-      | bil <- option "block_item_list"
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "block_item_list", nonTerminal "option" ["block_item_list"], "block_item" ],
 
-      ++
 
       -- block_item:
       -- | declaration
       -- | statement
       --     {}
 
-      [ ruleWithNoAction "block_item -> declaration"
-      , ruleWithNoAction "block_item -> statement"
-      ]
+      ruleWithNoAction "block_item -> declaration",
+      ruleWithNoAction "block_item -> statement",
 
-      ++
 
       -- expression_statement:
       -- | expression? ";"
       --     {}
 
-      [ ruleWithNoAction $ "expression_statement -> " ++ e ++ " ;"
-      | e <- option "expression"
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "expression_statement", nonTerminal "option" ["expression"], ";" ],
 
-      ++
 
       -- selection_statement:
       -- | "if" "(" expression ")" scoped(statement) "else" scoped(statement)
@@ -1404,24 +1331,21 @@ parserSpec = ParserSpec
       -- | "switch" "(" expression ")" scoped(statement)
       --     {}
 
-      [ ruleWithNoAction $ "selection_statement -> if ( expression ) " ++ s1 ++  " else " ++ s2
-      | s1 <- scoped "statement"
-      , s2 <- scoped "statement"
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "selection_statement", "if", "(", "expression", ")",
+          nonTerminal "scoped" ["statement"],  "else", nonTerminal "scoped" ["statement"] ],
 
-      ++
+      ruleNoActionWithPrec
+        (toProdRule
+          ["selection_statement",
+           "if", "(", "expression", ")", nonTerminal "scoped" ["statement"]])
+        "below_ELSE",
 
-      [ ruleNoActionWithPrec ("selection_statement -> if ( expression ) " ++ s) "below_ELSE"
-      | s <- scoped "statement"
-      ]
 
-      ++
+      ruleWithNoAction $ toProdRule
+        [ "selection_statement",
+          "switch", "(", "expression", ")", nonTerminal "scoped" ["statement"] ],
 
-      [ ruleWithNoAction $ "selection_statement -> switch ( expression ) " ++ s
-      | s <- scoped "statement"
-      ]
-
-      ++
 
       -- iteration_statement:
       -- | "while" "(" expression ")" scoped(statement)
@@ -1430,36 +1354,32 @@ parserSpec = ParserSpec
       -- | "for" "(" declaration expression? ";" expression? ")" scoped(statement)
       --     {}
 
-      [ ruleWithNoAction $ "iteration_statement -> while ( expression ) " ++ s
-      | s <- scoped "statement"
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "iteration_statement",
+          "while", "(", "expression", ")", nonTerminal "scoped" ["statement"] ],
 
-      ++
 
-      [ ruleWithNoAction $ "iteration_statement -> do " ++ s ++ " while ( expression ) ;"
-      | s <- scoped "statement"
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "iteration_statement",
+          "do", nonTerminal "scoped" ["statement"], "while", "(", "expression", ")", ";" ],
 
-      ++
       
-      [ ruleWithNoAction $
-          "iteration_statement -> for ( " ++ e1 ++ " ; " ++ e2 ++ " ; " ++ e3 ++ " ) " ++ s 
-      | e1 <- option "expression"
-      , e2 <- option "expression"
-      , e3 <- option "expression"
-      , s <- scoped "statement"
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "iteration_statement",
+          "for", "(",
+          nonTerminal "option" ["expression"], ";",
+          nonTerminal "option" ["expression"], ";",
+          nonTerminal "option" ["expression"], ")",
+          nonTerminal "scoped" ["statement"] ],
 
-      ++
 
-      [ ruleWithNoAction $
-          "iteration_statement -> for ( declaration " ++ e1 ++ " ; " ++ e2 ++ " ) " ++ s
-      | e1 <- option "expression"
-      , e2 <- option "expression"
-      , s  <- scoped "statement"
-      ]
-
-      ++
+      ruleWithNoAction $ toProdRule
+        [ "iteration_statement",
+          "for", "(", "declaration"
+          nonTerminal "option" ["expression"], ";",
+          nonTerminal "option" ["expression"], ")",
+          nonTerminal "scoped" ["statement"] ],
+        
 
       -- jump_statement:
       -- | "goto" general_identifier ";"
@@ -1468,40 +1388,31 @@ parserSpec = ParserSpec
       -- | "return" expression? ";"
       --     {}
 
-      [ ruleWithNoAction "jump_statement -> goto general_identifier ;"
-      , ruleWithNoAction "jump_statement -> continue ;"
-      , ruleWithNoAction "jump_statement -> break ;"
-      ]
+      ruleWithNoAction "jump_statement -> goto general_identifier ;",
+      ruleWithNoAction "jump_statement -> continue ;",
+      ruleWithNoAction "jump_statement -> break ;",
+      ruleWithNoAction $ toProdRule
+        [ "jump_statement",
+          "return ", nonTerminal "option" ["expression"], ";" ],
 
-      ++
-      
-      [ ruleWithNoAction $ "jump_statement -> return " ++ e ++ " ;"
-      | e <- option "expression"
-      ]
-
-      ++
       
       -- translation_unit_file:
       -- | external_declaration translation_unit_file
       -- | external_declaration EOF
       --     {}
 
-      [ ruleWithNoAction "translation_unit_file -> external_declaration translation_unit_file"
-      , ruleWithNoAction "translation_unit_file -> external_declaration EOF" -- Todo: EOF???
-      ]
+      ruleWithNoAction "translation_unit_file -> external_declaration translation_unit_file",
+      ruleWithNoAction "translation_unit_file -> external_declaration EOF", -- Todo: EOF???
 
-      ++
 
       -- external_declaration:
       -- | function_definition
       -- | declaration
       --     {}
 
-      [ ruleWithNoAction "external_declaration -> function_definition"
-      , ruleWithNoAction "external_declaration -> declaration"
-      ]
+      ruleWithNoAction "external_declaration -> function_definition",
+      ruleWithNoAction "external_declaration -> declaration",
 
-      ++
 
       -- function_definition1:
       -- | declaration_specifiers d = declarator_varname
@@ -1509,29 +1420,73 @@ parserSpec = ParserSpec
       --       reinstall_function_context d;
       --       ctx }
 
-      [ ruleWithNoAction "function_definition1 -> declaration_specifiers declarator_varname" ]
+      ruleWithNoAction "function_definition1 -> declaration_specifiers declarator_varname",
       
-      ++
 
       -- function_definition:
       -- | ctx = function_definition1 declaration_list? compound_statement
       --     { restore_context ctx }
 
-      [ ruleWithNoAction $
-          "function_definition -> function_definition1 " ++ dl ++ " compound_statement"
-      | dl <- option "declaration_list"
-      ]
+      ruleWithNoAction $ toProdRule
+        [ "function_definition",
+          "function_definition1", nonTerminal "option" ["declaration_list"], " compound_statement" ],
 
-      ++
 
       -- declaration_list:
       -- | declaration
       -- | declaration_list declaration
       --     {}
 
-      [ ruleWithNoAction "declaration_list -> declaration"
-      , ruleWithNoAction "declaration_list -> declaration_list declaration"
-      ]
+      ruleWithNoAction "declaration_list -> declaration",
+      ruleWithNoAction "declaration_list -> declaration_list declaration",
+
+
+      -- Standard library
+
+      ++
+      
+      -- (-)?
+      option "argument_expression_list" ++
+      option "comma"                        ++    -- ","?
+      option (nonTerminal "init_declarator_list" [ "declarator_varname" ]) ++
+      option (nonTerminal "init_declarator_list" [ "declarator_typedefname" ]) ++
+      option "general_identifier" ++
+      option "struct_declarator_list" ++
+      option "declarator" ++
+      option "general_identifier" ++
+      option "type_qualifier_list" ++
+      option "assignment_expression" ++
+      option "type_qualifier_list" ++
+      option "identifier_list" ++
+      option "pointer" ++
+      option "abstract_declarator" ++
+      option "direct_abstract_declarator" ++
+      option "assignment_expression" ++
+      option (nonTerminal "scoped" [ "parameter_type_list" ]) ++
+      option "designation" ++
+      option "designator_list" ++
+      option "block_item_list" ++
+      option "expression" ++
+      option "declaration_list" ++
+
+      -- list_eq1
+      list_eq1 "type_specifier_unique" "declaration_specifier" ++
+      list_eq1 "type_specifier_unique" "type_qualifier" ++
+      list_eq1 "type_specifier_unique" "alignment_specifier" ++
+
+      -- list_ge1
+      list_ge1 "type_specifier_nonunique" "declaration_specifier" ++
+      list_ge1 "type_specifier_nonunique" "type_qualifier" ++
+      list_ge1 "type_specifier_nonunique" "alignment_specifier" ++
+      
+      -- list_eq1_eq1
+      list_eq1_eq1 "typedef" "type_specifier_unique" "declaration_specifier" ++
+
+      -- list_eq1_ge1
+      list_eq1_ge1 "typedef" "type_specifier_nonunique" "declaration_specifier" ++
+      
+      []
+
     ,
     
     baseDir = "./",
