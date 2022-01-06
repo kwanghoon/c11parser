@@ -1,0 +1,335 @@
+0: translation_unit_file' -> translation_unit_file
+1: typedef_name -> NAME TYPE
+2: var_name -> NAME VARIABLE
+3: typedef_name_spec -> typedef_name
+4: general_identifier -> typedef_name
+5: general_identifier -> var_name
+6: save_context -> 
+7: scoped_parameter_type_list -> save_context parameter_type_list
+8: scoped_compound_statement -> save_context compound_statement
+9: scoped_selection_statement -> save_context selection_statement
+10: scoped_iteration_statement -> save_context iteration_statement
+11: scoped_statement -> save_context statement
+12: scoped_parameter_type_list -> save_context parameter_type_list
+13: declarator_varname -> declarator
+14: declarator_typedefname -> declarator
+15: primary_expression -> var_name
+16: primary_expression -> CONSTANT
+17: primary_expression -> STRING_LITERAL
+18: primary_expression -> ( expression )
+19: primary_expression -> generic_selection
+20: generic_selection -> _Generic ( assignment_expression , generic_assoc_list )
+21: generic_assoc_list -> generic_association
+22: generic_assoc_list -> generic_assoc_list , generic_association
+23: generic_association -> type_name : assignment_expression
+24: generic_association -> default : assignment_expression
+25: postfix_expression -> primary_expression
+26: postfix_expression -> postfix_expression [ expression ]
+27: postfix_expression -> postfix_expression ( option_argument_expression_list )
+28: postfix_expression -> postfix_expression . general_identifier
+29: postfix_expression -> postfix_expression -> general_identifier
+30: postfix_expression -> postfix_expression ++
+31: postfix_expression -> postfix_expression --
+32: postfix_expression -> ( type_name ) { initializer_list option_comma }
+33: argument_expression_list -> assignment_expression
+34: argument_expression_list -> argument_expression_list , assignment_expression
+35: unary_expression -> postfix_expression
+36: unary_expression -> ++ unary_expression
+37: unary_expression -> -- unary_expression
+38: unary_expression -> unary_operator cast_expression
+39: unary_expression -> sizeof unary_expression
+40: unary_expression -> sizeof ( type_name )
+41: unary_expression -> _Alignof ( type_name )
+42: unary_operator -> &
+43: unary_operator -> *
+44: unary_operator -> +
+45: unary_operator -> -
+46: unary_operator -> ~
+47: unary_operator -> !
+48: cast_expression -> unary_expression
+49: cast_expression -> ( type_name ) cast_expression
+50: multiplicative_operator -> *
+51: multiplicative_operator -> /
+52: multiplicative_operator -> %
+53: multiplicative_expression -> cast_expression
+54: multiplicative_expression -> multiplicative_expression multiplicative_operator cast_expression
+55: additive_operator -> +
+56: additive_operator -> -
+57: additive_expression -> multiplicative_expression
+58: additive_expression -> additive_expression additive_operator multiplicative_expression
+59: shift_operator -> <<
+60: shift_operator -> >>
+61: shift_expression -> additive_expression
+62: shift_expression -> shift_expression shift_operator additive_expression
+63: relational_operator -> <
+64: relational_operator -> >
+65: relational_operator -> <=
+66: relational_operator -> >=
+67: relational_expression -> shift_expression
+68: relational_expression -> relational_expression relational_operator shift_expression
+69: equality_operator -> ==
+70: equality_operator -> !=
+71: equality_expression -> relational_expression
+72: equality_expression -> equality_expression equality_operator relational_expression
+73: and_expression -> equality_expression
+74: and_expression -> and_expression & equality_expression
+75: exclusive_or_expression -> and_expression
+76: exclusive_or_expression -> exclusive_or_expression ^ and_expression
+77: inclusive_or_expression -> exclusive_or_expression
+78: inclusive_or_expression -> inclusive_or_expression | exclusive_or_expression
+79: logical_and_expression -> inclusive_or_expression
+80: logical_and_expression -> logical_and_expression && inclusive_or_expression
+81: logical_or_expression -> logical_and_expression
+82: logical_or_expression -> logical_or_expression || logical_and_expression
+83: conditional_expression -> logical_or_expression
+84: conditional_expression -> logical_or_expression ? expression : conditional_expression
+85: assignment_expression -> conditional_expression
+86: assignment_expression -> unary_expression assignment_operator assignment_expression
+87: assignment_operator -> =
+88: assignment_operator -> *=
+89: assignment_operator -> /=
+90: assignment_operator -> %=
+91: assignment_operator -> +=
+92: assignment_operator -> -=
+93: assignment_operator -> <<=
+94: assignment_operator -> >>=
+95: assignment_operator -> &=
+96: assignment_operator -> ^=
+97: assignment_operator -> |=
+98: expression -> assignment_expression
+99: expression -> expression , assignment_expression
+100: constant_expression -> conditional_expression
+101: declaration -> declaration_specifiers option_init_declarator_list_declarator_varname ;
+102: declaration -> declaration_specifiers_typedef option_init_declarator_list_declarator_typedefname ;
+103: declaration -> static_assert_declaration
+104: declaration_specifier -> storage_class_specifier
+105: declaration_specifier -> type_qualifier
+106: declaration_specifier -> function_specifier
+107: declaration_specifier -> alignment_specifier
+108: declaration_specifiers -> list_eq1_type_specifier_unique_declaration_specifier
+109: declaration_specifiers -> list_ge1_type_specifier_nonunique_declaration_specifier
+110: declaration_specifiers_typedef -> list_eq1_eq1_typedef_type_specifier_unique_declaration_specifier
+111: declaration_specifiers_typedef -> list_eq1_ge1_typedef_type_specifier_nonunique_declaration_specifier
+112: init_declarator_list_declarator_varname -> init_declarator_declarator_varname
+113: init_declarator_list_declarator_varname -> init_declarator_list_declarator_varname , init_declarator_declarator_varname
+114: init_declarator_list_declarator_typedefname -> init_declarator_declarator_typedefname
+115: init_declarator_list_declarator_typedefname -> init_declarator_list_declarator_typedefname , init_declarator_declarator_typedefname
+116: init_declarator_declarator_varname -> declarator_varname
+117: init_declarator_declarator_varname -> declarator = c_initializer
+118: init_declarator_declarator_typedefname -> declarator_typedefname
+119: init_declarator_declarator_typedefname -> declarator = c_initializer
+120: storage_class_specifier -> extern
+121: storage_class_specifier -> static
+122: storage_class_specifier -> _Thread_local
+123: storage_class_specifier -> auto
+124: storage_class_specifier -> register
+125: type_specifier_nonunique -> char
+126: type_specifier_nonunique -> short
+127: type_specifier_nonunique -> int
+128: type_specifier_nonunique -> long
+129: type_specifier_nonunique -> float
+130: type_specifier_nonunique -> double
+131: type_specifier_nonunique -> signed
+132: type_specifier_nonunique -> unsigned
+133: type_specifier_nonunique -> _Complex
+134: type_specifier_unique -> void
+135: type_specifier_unique -> _Bool
+136: type_specifier_unique -> atomic_type_specifier
+137: type_specifier_unique -> struct_or_union_specifier
+138: type_specifier_unique -> enum_specifier
+139: type_specifier_unique -> typedef_name_spec
+140: struct_or_union_specifier -> struct_or_union option_general_identifier { struct_declaration_list }
+141: struct_or_union_specifier -> struct_or_union general_identifier
+142: struct_or_union -> struct
+143: struct_or_union -> union
+144: struct_declaration_list -> struct_declaration
+145: struct_declaration_list -> struct_declaration_list struct_declaration
+146: struct_declaration -> specifier_qualifier_list option_struct_declarator_list ;
+147: struct_declaration -> static_assert_declaration
+148: specifier_qualifier_list -> list_eq1_type_specifier_unique_type_qualifier
+149: specifier_qualifier_list -> list_eq1_type_specifier_unique_alignment_specifier
+150: specifier_qualifier_list -> list_ge1_type_specifier_nonunique_type_qualifier
+151: specifier_qualifier_list -> list_ge1_type_specifier_nonunique_alignment_specifier
+152: struct_declarator_list -> struct_declarator
+153: struct_declarator_list -> struct_declarator_list , struct_declarator
+154: struct_declarator -> declarator
+155: struct_declarator -> option_declarator : constant_expression
+156: enum_specifier -> enum option_general_identifier { enumerator_list option_comma }
+157: enum_specifier -> enum general_identifier
+158: enumerator_list -> enumerator
+159: enumerator_list -> enumerator_list , enumerator
+160: enumerator -> enumeration_constant
+161: enumerator -> enumeration_constant = constant_expression
+162: enumeration_constant -> general_identifier
+163: atomic_type_specifier -> _Atomic ( type_name )
+164: atomic_type_specifier -> _Atomic ATOMIC_LPAREN type_name )
+165: type_qualifier -> const
+166: type_qualifier -> restrict
+167: type_qualifier -> volatile
+168: type_qualifier -> _Atomic
+169: function_specifier -> inline
+170: function_specifier -> _Noreturn
+171: alignment_specifier -> _Alignas ( type_name )
+172: alignment_specifier -> _Alignas ( constant_expression )
+173: declarator -> direct_declarator
+174: declarator -> pointer direct_declarator
+175: direct_declarator -> general_identifier
+176: direct_declarator -> ( save_context declarator )
+177: direct_declarator -> direct_declarator [ option_type_qualifier_list option_assignment_expression ]
+178: direct_declarator -> direct_declarator [ static option_type_qualifier_list assignment_expression ]
+179: direct_declarator -> direct_declarator [ type_qualifier_list static assignment_expression ]
+180: direct_declarator -> direct_declarator [ option_type_qualifier_list * ]
+181: direct_declarator -> direct_declarator ( scoped_parameter_type_list )
+182: direct_declarator -> direct_declarator ( save_context option_identifier_list )
+183: pointer -> * option_type_qualifier_list option_pointer
+184: type_qualifier_list -> option_type_qualifier_list type_qualifier
+185: parameter_type_list -> parameter_list option_comma_dotdotdot save_context
+186: parameter_list -> parameter_declaration
+187: parameter_list -> parameter_list , parameter_declaration
+188: parameter_declaration -> declaration_specifiers declarator_varname
+189: parameter_declaration -> declaration_specifiers option_abstract_declarator
+190: identifier_list -> var_name
+191: identifier_list -> identifier_list , var_name
+192: type_name -> specifier_qualifier_list option_abstract_declarator
+193: abstract_declarator -> pointer
+194: abstract_declarator -> direct_abstract_declarator
+195: abstract_declarator -> pointer direct_abstract_declarator
+196: direct_abstract_declarator -> ( save_context abstract_declarator )
+197: direct_abstract_declarator -> option_direct_abstract_declarator [ option_assignment_expression ]
+198: direct_abstract_declarator -> option_direct_abstract_declarator [ type_qualifier_list option_assignment_expression ]
+199: direct_abstract_declarator -> option_direct_abstract_declarator [ static option_type_qualifier_list assignment_expression ]
+200: direct_abstract_declarator -> option_direct_abstract_declarator [ type_qualifier_list static assignment_expression ]
+201: direct_abstract_declarator -> option_direct_abstract_declarator [ * ]
+202: direct_abstract_declarator -> ( option_scoped_parameter_type_list )
+203: direct_abstract_declarator -> direct_abstract_declarator ( option_scoped_parameter_type_list )
+204: c_initializer -> assignment_expression
+205: c_initializer -> { initializer_list option_comma }
+206: initializer_list -> option_designation c_initializer
+207: initializer_list -> initializer_list , option_designation c_initializer
+208: designation -> designator_list =
+209: designator_list -> option_designator_list designator
+210: designator -> [ constant_expression ]
+211: designator -> . general_identifier
+212: static_assert_declaration -> _Static_assert ( constant_expression , STRING_LITERAL ) ;
+213: statement -> labeled_statement
+214: statement -> scoped_compound_statement
+215: statement -> expression_statement
+216: statement -> scoped_selection_statement
+217: statement -> scoped_iteration_statement
+218: statement -> jump_statement
+219: labeled_statement -> general_identifier : statement
+220: labeled_statement -> case constant_expression : statement
+221: labeled_statement -> default : statement
+222: compound_statement -> { option_block_item_list }
+223: block_item_list -> option_block_item_list block_item
+224: block_item -> declaration
+225: block_item -> statement
+226: expression_statement -> option_expression ;
+227: selection_statement -> if ( expression ) scoped_statement else scoped_statement
+228: selection_statement -> if ( expression ) scoped_statement
+229: selection_statement -> switch ( expression ) scoped_statement
+230: iteration_statement -> while ( expression ) scoped_statement
+231: iteration_statement -> do scoped_statement while ( expression ) ;
+232: iteration_statement -> for ( option_expression ; option_expression ; option_expression ) scoped_statement
+233: iteration_statement -> for ( declaration option_expression ; option_expression ) scoped_statement
+234: jump_statement -> goto general_identifier ;
+235: jump_statement -> continue ;
+236: jump_statement -> break ;
+237: jump_statement -> return option_expression ;
+238: translation_unit_file -> external_declaration translation_unit_file
+239: translation_unit_file -> external_declaration EOF
+240: external_declaration -> function_definition
+241: external_declaration -> declaration
+242: function_definition1 -> declaration_specifiers declarator_varname
+243: function_definition -> function_definition1 option_declaration_list compound_statement
+244: declaration_list -> declaration
+245: declaration_list -> declaration_list declaration
+246: option_argument_expression_list -> 
+247: option_argument_expression_list -> argument_expression_list
+248: option_comma -> 
+249: option_comma -> ,
+250: option_comma_dotdotdot -> 
+251: option_comma_dotdotdot -> , ...
+252: option_init_declarator_list_declarator_varname -> 
+253: option_init_declarator_list_declarator_varname -> init_declarator_list_declarator_varname
+254: option_init_declarator_list_declarator_typedefname -> 
+255: option_init_declarator_list_declarator_typedefname -> init_declarator_list_declarator_typedefname
+256: option_general_identifier -> 
+257: option_general_identifier -> general_identifier
+258: option_struct_declarator_list -> 
+259: option_struct_declarator_list -> struct_declarator_list
+260: option_declarator -> 
+261: option_declarator -> declarator
+262: option_general_identifier -> 
+263: option_general_identifier -> general_identifier
+264: option_type_qualifier_list -> 
+265: option_type_qualifier_list -> type_qualifier_list
+266: option_assignment_expression -> 
+267: option_assignment_expression -> assignment_expression
+268: option_type_qualifier_list -> 
+269: option_type_qualifier_list -> type_qualifier_list
+270: option_identifier_list -> 
+271: option_identifier_list -> identifier_list
+272: option_pointer -> 
+273: option_pointer -> pointer
+274: option_abstract_declarator -> 
+275: option_abstract_declarator -> abstract_declarator
+276: option_direct_abstract_declarator -> 
+277: option_direct_abstract_declarator -> direct_abstract_declarator
+278: option_assignment_expression -> 
+279: option_assignment_expression -> assignment_expression
+280: option_scoped_parameter_type_list -> 
+281: option_scoped_parameter_type_list -> scoped_parameter_type_list
+282: option_designation -> 
+283: option_designation -> designation
+284: option_designator_list -> 
+285: option_designator_list -> designator_list
+286: option_block_item_list -> 
+287: option_block_item_list -> block_item_list
+288: option_expression -> 
+289: option_expression -> expression
+290: option_declaration_list -> 
+291: option_declaration_list -> declaration_list
+292: list_eq1_type_specifier_unique_declaration_specifier -> type_specifier_unique list_declaration_specifier
+293: list_eq1_type_specifier_unique_declaration_specifier -> declaration_specifier list_eq1_type_specifier_unique_declaration_specifier
+294: list_declaration_specifier -> 
+295: list_declaration_specifier -> declaration_specifier list_declaration_specifier
+296: list_eq1_type_specifier_unique_type_qualifier -> type_specifier_unique list_type_qualifier
+297: list_eq1_type_specifier_unique_type_qualifier -> type_qualifier list_eq1_type_specifier_unique_type_qualifier
+298: list_type_qualifier -> 
+299: list_type_qualifier -> type_qualifier list_type_qualifier
+300: list_eq1_type_specifier_unique_alignment_specifier -> type_specifier_unique list_alignment_specifier
+301: list_eq1_type_specifier_unique_alignment_specifier -> alignment_specifier list_eq1_type_specifier_unique_alignment_specifier
+302: list_alignment_specifier -> 
+303: list_alignment_specifier -> alignment_specifier list_alignment_specifier
+304: list_ge1_type_specifier_nonunique_declaration_specifier -> type_specifier_nonunique list_declaration_specifier
+305: list_ge1_type_specifier_nonunique_declaration_specifier -> type_specifier_nonunique list_ge1_type_specifier_nonunique_declaration_specifier
+306: list_ge1_type_specifier_nonunique_declaration_specifier -> declaration_specifier list_ge1_type_specifier_nonunique_declaration_specifier
+307: list_declaration_specifier -> 
+308: list_declaration_specifier -> declaration_specifier list_declaration_specifier
+309: list_ge1_type_specifier_nonunique_type_qualifier -> type_specifier_nonunique list_type_qualifier
+310: list_ge1_type_specifier_nonunique_type_qualifier -> type_specifier_nonunique list_ge1_type_specifier_nonunique_type_qualifier
+311: list_ge1_type_specifier_nonunique_type_qualifier -> type_qualifier list_ge1_type_specifier_nonunique_type_qualifier
+312: list_type_qualifier -> 
+313: list_type_qualifier -> type_qualifier list_type_qualifier
+314: list_ge1_type_specifier_nonunique_alignment_specifier -> type_specifier_nonunique list_alignment_specifier
+315: list_ge1_type_specifier_nonunique_alignment_specifier -> type_specifier_nonunique list_ge1_type_specifier_nonunique_alignment_specifier
+316: list_ge1_type_specifier_nonunique_alignment_specifier -> alignment_specifier list_ge1_type_specifier_nonunique_alignment_specifier
+317: list_alignment_specifier -> 
+318: list_alignment_specifier -> alignment_specifier list_alignment_specifier
+319: list_eq1_eq1_typedef_type_specifier_unique_declaration_specifier -> typedef list_eq1_type_specifier_unique_declaration_specifier
+320: list_eq1_eq1_typedef_type_specifier_unique_declaration_specifier -> type_specifier_unique list_eq1_typedef_declaration_specifier
+321: list_eq1_eq1_typedef_type_specifier_unique_declaration_specifier -> declaration_specifier list_eq1_eq1_typedef_type_specifier_unique_declaration_specifier
+322: list_eq1_type_specifier_unique_declaration_specifier -> type_specifier_unique list_declaration_specifier
+323: list_eq1_type_specifier_unique_declaration_specifier -> declaration_specifier list_eq1_type_specifier_unique_declaration_specifier
+324: list_eq1_typedef_declaration_specifier -> typedef list_declaration_specifier
+325: list_eq1_typedef_declaration_specifier -> declaration_specifier list_eq1_typedef_declaration_specifier
+326: list_eq1_ge1_typedef_type_specifier_nonunique_declaration_specifier -> typedef list_ge1_type_specifier_nonunique_declaration_specifier
+327: list_eq1_ge1_typedef_type_specifier_nonunique_declaration_specifier -> type_specifier_nonunique list_eq1_typedef_declaration_specifier
+328: list_eq1_ge1_typedef_type_specifier_nonunique_declaration_specifier -> type_specifier_nonunique list_eq1_ge1_typedef_type_specifier_nonunique_declaration_specifier
+329: list_eq1_ge1_typedef_type_specifier_nonunique_declaration_specifier -> declaration_specifier list_eq1_ge1_typedef_type_specifier_nonunique_declaration_specifier
+330: list_ge1_type_specifier_nonunique_declaration_specifier -> type_specifier_nonunique list_declaration_specifier
+331: list_ge1_type_specifier_nonunique_declaration_specifier -> type_specifier_nonunique list_ge1_type_specifier_nonunique_declaration_specifier
+332: list_ge1_type_specifier_nonunique_declaration_specifier -> declaration_specifier list_ge1_type_specifier_nonunique_declaration_specifier
+333: list_eq1_typedef_declaration_specifier -> typedef list_declaration_specifier
+334: list_eq1_typedef_declaration_specifier -> declaration_specifier list_eq1_typedef_declaration_specifier
