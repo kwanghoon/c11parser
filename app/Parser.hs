@@ -6,6 +6,7 @@ import Attrs
 import CommonParserUtil
 import Token
 import Expr
+import Lexer
 
 -- | Utility
 rule prodRule action               = (prodRule, action, Nothing  )
@@ -13,7 +14,7 @@ ruleWithPrec prodRule action prec  = (prodRule, action, Just prec)
 ruleWithNoAction prodRule          = (prodRule, noAction, Nothing)
 ruleNoActionWithPrec prodRule prec = (prodRule, noAction, Just prec)
 
-noAction = \rhs -> ()
+noAction = \rhs -> return ()
 
 
 -- | for writing grammar rules
@@ -174,7 +175,7 @@ init_declarator declarator =
     
 
 -- | a parser specification
-parserSpec :: ParserSpec Token AST
+parserSpec :: ParserSpec Token AST IO ()
 parserSpec = ParserSpec
   {
     startSymbol = "translation_unit_file'",
@@ -200,6 +201,8 @@ parserSpec = ParserSpec
       [ (Attrs.Nonassoc, [ "below_ELSE" ]) 
       , (Attrs.Nonassoc, [ "ELSE" ])
       ],
+    
+    chumLexerSpec = lexerSpec,
     
     parserSpecList = c11ParserSpecList,
     baseDir = "./",

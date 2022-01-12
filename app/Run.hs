@@ -12,12 +12,12 @@ import System.IO
 
 doProcess verbose fileName = do
   text <- readFile fileName
-  when (verbose) $ putStrLn "Lexing..."
-  terminalList <- lexing lexerSpec text
+  -- when (verbose) $ putStrLn "Lexing..."
+  -- terminalList <- lexing lexerSpec text
   -- mapM_ (putStrLn . terminalToString) terminalList
   when verbose $ putStrLn "Parsing..."
   -- when verbose $ mapM_ (\(a,_,_)-> putStrLn $ show a) $ parserSpecList parserSpec
-  exprSeqAst <- parsing True parserSpec terminalList
+  exprSeqAst <- parsing True parserSpec ((),1,1,text)
   when (verbose) $ putStrLn "Done."
   -- when (verbose) $ putStrLn "Pretty Printing..."
   -- when (verbose) $ putStrLn (pprintAst exprSeqAst)

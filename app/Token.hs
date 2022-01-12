@@ -219,4 +219,5 @@ instance TokenInterface Token where
       Nothing  -> error ("fromToken: " ++ show tok)
       Just str -> str
   
-
+  isEOT EOF = True
+  isEOT _   = False

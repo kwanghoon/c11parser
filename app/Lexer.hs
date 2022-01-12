@@ -5,11 +5,11 @@ import CommonParserUtil
 import Token
 import Text.Regex.TDFA
 
-mkFn :: Token -> (String -> Maybe Token)
-mkFn tok = \text -> Just tok
+mkFn :: Token -> LexAction Token IO ()    -- (String -> Maybe Token)
+mkFn tok = \text -> return $ Just tok
 
-skip :: String -> Maybe Token
-skip = \text -> Nothing
+skip :: LexAction Token IO ()             -- String -> Maybe Token
+skip = \text -> return Nothing
 
 
 -- | Utilities
@@ -130,7 +130,7 @@ escape_sequence =
 
 
 -- | Lexical analysis specification
-lexerSpec :: LexerSpec Token
+lexerSpec :: LexerSpec Token IO ()
 lexerSpec = LexerSpec
   {
     endOfToken    = EOF,
