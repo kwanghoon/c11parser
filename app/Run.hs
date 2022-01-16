@@ -17,7 +17,7 @@ doProcess verbose fileName = do
   -- mapM_ (putStrLn . terminalToString) terminalList
   when verbose $ putStrLn "Parsing..."
   -- when verbose $ mapM_ (\(a,_,_)-> putStrLn $ show a) $ parserSpecList parserSpec
-  exprSeqAst <- parsing True parserSpec ((),1,1,text)
+  exprSeqAst <- parsing True parserSpec ((),1,1,text) (aLexer lexerSpec)
   when (verbose) $ putStrLn "Done."
   -- when (verbose) $ putStrLn "Pretty Printing..."
   -- when (verbose) $ putStrLn (pprintAst exprSeqAst)

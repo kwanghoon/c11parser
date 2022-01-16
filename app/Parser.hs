@@ -6,7 +6,6 @@ import Attrs
 import CommonParserUtil
 import Token
 import Expr
-import Lexer
 
 -- | Utility
 rule prodRule action               = (prodRule, action, Nothing  )
@@ -201,8 +200,6 @@ parserSpec = ParserSpec
       [ (Attrs.Nonassoc, [ "below_ELSE" ]) 
       , (Attrs.Nonassoc, [ "ELSE" ])
       ],
-    
-    chumLexerSpec = lexerSpec,
     
     parserSpecList = c11ParserSpecList,
     baseDir = "./",
