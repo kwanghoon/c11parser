@@ -337,4 +337,5 @@
  ]
 ,
 TokenAttrs [("below_ELSE",(Nonassoc,1)),("ELSE",(Nonassoc,2))],
-ProdRuleAttrs [(228,(Nonassoc,1))])
+ProdRuleAttrs [(228,(Nonassoc,1))],
+"EOF")

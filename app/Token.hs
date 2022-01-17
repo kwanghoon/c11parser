@@ -1,4 +1,4 @@
-module Token(Token(..)) where
+module Token(Token(..),fromToken,isEOT) where
 
 import Prelude hiding(EQ, LT, GT)
 import TokenInterface
@@ -105,7 +105,7 @@ data Token =
 
 tokenStrList :: [(Token,String)]
 tokenStrList =
-  [ (EOF, "$"),
+  [ (EOF, "EOF"),
     
     (NAME, "NAME"),
     (VARIABLE, "VARIABLE"), (TYPE, "TYPE"),

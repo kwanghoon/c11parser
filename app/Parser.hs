@@ -6,6 +6,8 @@ import Attrs
 import CommonParserUtil
 import Token
 import Expr
+import Context
+import Declarator
 
 -- | Utility
 rule prodRule action               = (prodRule, action, Nothing  )
@@ -13,7 +15,7 @@ ruleWithPrec prodRule action prec  = (prodRule, action, Just prec)
 ruleWithNoAction prodRule          = (prodRule, noAction, Nothing)
 ruleNoActionWithPrec prodRule prec = (prodRule, noAction, Just prec)
 
-noAction = \rhs -> return ()
+noAction = \rhs -> return NoAST
 
 
 -- | for writing grammar rules
@@ -35,19 +37,15 @@ toProdRule (x:xs) = x ++ " ->" ++ toProdRule' xs
 -- | X
 --     {}
 
-option :: String -> [String]   -- Todo: %inline? Done!
-option x =
-  map toProdRule $
-    map (nonTerminal "option" [x] :)  -- Todo: ioption or option?
-      [ []
-      , [x]
-      ]
-
 -- option(X):
 -- | o = ioption(X)
 --     { o }
 
--- option x = ioption x
+option :: String -> [(ProdRuleStr, ParseAction Token AST IO LPS, ProdRulePrec)]   -- Todo: %inline? Done!
+option x =
+  [ (toProdRule [ nonTerminal "option" [x] ]   , noAction,                   Nothing)
+  , (toProdRule [ nonTerminal "option" [x], x ], \rhs -> return (get rhs 1), Nothing)
+  ]
 
 -- (* By convention, [X*] is syntactic sugar for [list(X)]. *)
 
@@ -174,7 +172,7 @@ init_declarator declarator =
     
 
 -- | a parser specification
-parserSpec :: ParserSpec Token AST IO ()
+parserSpec :: ParserSpec Token AST IO LPS
 parserSpec = ParserSpec
   {
     startSymbol = "translation_unit_file'",
@@ -225,13 +223,13 @@ c11ParserSpecList =
     -- | i = NAME TYPE
     --     { i }
 
-    ruleWithNoAction "typedef_name -> NAME TYPE",
+    rule "typedef_name -> NAME TYPE" (\rhs -> return (StrAST (getText rhs 1))),
 
     -- var_name:
     -- | i = NAME VARIABLE
     --     { i }
 
-    ruleWithNoAction "var_name -> NAME VARIABLE",
+    rule "var_name -> NAME VARIABLE" (\rhs -> return (StrAST (getText rhs 1))),
 
     -- (* [typedef_name_spec] must be declared before [general_identifier], so that the
     --    reduce/reduce conflict is solved the right way. *)
@@ -247,15 +245,15 @@ c11ParserSpecList =
     -- | i = var_name
     --     { i }
 
-    ruleWithNoAction "general_identifier -> typedef_name",
+    rule "general_identifier -> typedef_name" (\rhs -> return (get rhs 1)),
 
-    ruleWithNoAction "general_identifier -> var_name",
+    rule "general_identifier -> var_name" (\rhs -> return (get rhs 1)),
 
     -- save_context:
     -- | (* empty *)
     --     { save_context () }
 
-    ruleWithNoAction "save_context -> "
+    rule "save_context -> " (\rhs -> do ctx <- save_context (); return (CtxAST ctx))
   ] ++
 
   -- scoped(X):
@@ -264,7 +262,13 @@ c11ParserSpecList =
 
   -- ==> Defined above
 
-  map ruleWithNoAction (
+  map (\prodRule ->
+         rule
+           prodRule
+           (\rhs ->
+              do let ctx = getCtx (get rhs 1)
+                 restore_context ctx
+                 return (get rhs 2))) (
     scoped "parameter_type_list" ++
     scoped "compound_statement"  ++
     scoped "selection_statement" ++
@@ -282,13 +286,19 @@ c11ParserSpecList =
     -- | d = declarator
     --     { declare_varname (identifier d); d }
 
-    ruleWithNoAction "declarator_varname -> declarator",
+    rule "declarator_varname -> declarator"
+      (\rhs -> do let d = getDecl (get rhs 1)
+                  declare_varname (identifier d)
+                  return (DeclAST d)),
 
     -- declarator_typedefname:
     -- | d = declarator
     --     { declare_typedefname (identifier d); d }
 
-    ruleWithNoAction "declarator_typedefname -> declarator",
+    rule "declarator_typedefname -> declarator"
+      (\rhs -> do let d = getDecl (get rhs 1)
+                  declare_typedefname (identifier d)
+                  return (DeclAST d)),
 
     -- (* End of the helpers, and beginning of the grammar proper: *)
 
@@ -964,16 +974,23 @@ c11ParserSpecList =
     -- | i = enumeration_constant "=" constant_expression
     --     { declare_varname i }
 
-    ruleWithNoAction "enumerator -> enumeration_constant",
+    rule "enumerator -> enumeration_constant"
+      (\rhs -> do let i = getStr (get rhs 1)
+                  declare_varname i
+                  return NoAST),
 
-    ruleWithNoAction "enumerator -> enumeration_constant = constant_expression",
+    rule "enumerator -> enumeration_constant = constant_expression"
+      (\rhs -> do let i = getStr (get rhs 1)
+                  declare_varname i
+                  return NoAST),
 
 
     -- enumeration_constant:
     -- | i = general_identifier
     --     { i }
 
-    ruleWithNoAction "enumeration_constant -> general_identifier",
+    rule "enumeration_constant -> general_identifier"
+      (\rhs -> return (get rhs 1)),
 
 
     -- atomic_type_specifier:
@@ -1025,10 +1042,25 @@ c11ParserSpecList =
     -- | ioption(pointer) d = direct_declarator
     --     { other_declarator d }
 
-    ruleWithNoAction "declarator -> direct_declarator",
-    ruleWithNoAction "declarator -> pointer direct_declarator",
+    rule "declarator -> direct_declarator"
+      (\rhs -> do let d = getDecl (get rhs 1)
+                  let od = other_declarator d
+                  return (DeclAST od)),
+    
+    rule "declarator -> pointer direct_declarator"
+      (\rhs -> do let d = getDecl (get rhs 2)
+                  let od = other_declarator d
+                  return (DeclAST od))
+  ]
 
+  ++
 
+  let od_action rhs =
+        do let d = getDecl (get rhs 1)
+           let od = other_declarator d
+           return (DeclAST od)
+  in
+  [
     -- (* The occurrences of [save_context] inside [direct_declarator] and
     --    [direct_abstract_declarator] seem to serve no purpose. In fact, they are
     --    required in order to avoid certain conflicts. In other words, we must save
@@ -1050,34 +1082,48 @@ c11ParserSpecList =
     -- | d = direct_declarator "(" save_context identifier_list? ")"
     --     { other_declarator d }
 
-    ruleWithNoAction "direct_declarator -> general_identifier",
+    rule "direct_declarator -> general_identifier"
+      (\rhs -> do let i = getStr (get rhs 1)
+                  let d = identifier_declarator i
+                  return (DeclAST d)),
 
-    ruleWithNoAction "direct_declarator -> ( save_context declarator )",
+    rule "direct_declarator -> ( save_context declarator )"
+      (\rhs -> return (get rhs 3)),
 
-    ruleWithNoAction $ toProdRule
+    rule (toProdRule
       [ "direct_declarator",
         "direct_declarator", "[", nonTerminal "option" ["type_qualifier_list"],
-         nonTerminal "option" ["assignment_expression"], "]" ],
+         nonTerminal "option" ["assignment_expression"], "]" ])
+      od_action,
 
-    ruleWithNoAction $ toProdRule
+    rule (toProdRule
       [ "direct_declarator",
         "direct_declarator", "[", "static",
-        nonTerminal "option" ["type_qualifier_list"], " assignment_expression", "]" ],
+        nonTerminal "option" ["type_qualifier_list"], " assignment_expression", "]" ])
+      od_action,
 
-    ruleWithNoAction "direct_declarator -> direct_declarator [ type_qualifier_list static assignment_expression ]",
+    rule "direct_declarator -> direct_declarator [ type_qualifier_list static assignment_expression ]" od_action,
 
-    ruleWithNoAction $ toProdRule
+    rule (toProdRule
       [ "direct_declarator", "direct_declarator", "[",
-        nonTerminal "option" ["type_qualifier_list"], "*", "]" ],
+        nonTerminal "option" ["type_qualifier_list"], "*", "]" ])
+      od_action,
 
-    ruleWithNoAction $ toProdRule
+    rule (toProdRule
       [ "direct_declarator", "direct_declarator", "(",
-        nonTerminal "scoped" ["parameter_type_list"], ")" ],
+        nonTerminal "scoped" ["parameter_type_list"], ")" ])
+      (\rhs -> do let d   = getDecl (get rhs 1)
+                  let ctx = getCtx  (get rhs 3)
+                  let fd  = function_declarator d ctx
+                  return (DeclAST fd)),
 
-    ruleWithNoAction $ toProdRule
+    rule (toProdRule
       [ "direct_declarator",
         "direct_declarator", "(", "save_context",
-        nonTerminal "option" ["identifier_list"], ")" ],
+        nonTerminal "option" ["identifier_list"], ")" ])
+      (\rhs -> do let d = getDecl (get rhs 1)
+                  let od = other_declarator d
+                  return (DeclAST od)),
 
 
     -- pointer:
@@ -1102,9 +1148,10 @@ c11ParserSpecList =
     -- | parameter_list option("," "..." {}) ctx = save_context
     --     { ctx }
 
-    ruleWithNoAction $ toProdRule
+    rule (toProdRule
       [ "parameter_type_list",
-        "parameter_list", nonTerminal "option" ["comma", "dotdotdot"], "save_context" ], -- Todo: comma, dotdotdot instead of , ...
+        "parameter_list", nonTerminal "option" ["comma", "dotdotdot"], "save_context" ])
+      (\rhs -> return (get rhs 3)), 
 
 
     -- parameter_list:
@@ -1432,16 +1479,23 @@ c11ParserSpecList =
     --       reinstall_function_context d;
     --       ctx }
 
-    ruleWithNoAction "function_definition1 -> declaration_specifiers declarator_varname",
+    rule "function_definition1 -> declaration_specifiers declarator_varname"
+      (\rhs -> do ctx   <- save_context ()
+                  let d =  getDecl (get rhs 2)
+                  reinstall_function_context d
+                  return (CtxAST ctx)),
 
 
     -- function_definition:
     -- | ctx = function_definition1 declaration_list? compound_statement
     --     { restore_context ctx }
 
-    ruleWithNoAction $ toProdRule
+    rule (toProdRule
       [ "function_definition",
-        "function_definition1", nonTerminal "option" ["declaration_list"], " compound_statement" ],
+        "function_definition1", nonTerminal "option" ["declaration_list"], " compound_statement" ])
+      (\rhs -> do let ctx = getCtx (get rhs 1)
+                  restore_context ctx
+                  return NoAST),
 
 
     -- declaration_list:
@@ -1456,41 +1510,40 @@ c11ParserSpecList =
 
   -- -- Standard library
 
-  map ruleWithNoAction (
-  
-    -- (-)?      
-    option "argument_expression_list" ++
-    -- option "comma"                    ++    -- ","?
-    [ "option_comma -> "
-    , "option_comma -> ,"
-    ] ++
-    
-    -- option "comma_dotdotdot"          ++    -- ", ..."?
-    [ "option_comma_dotdotdot -> "
-    , "option_comma_dotdotdot -> , ..."
-    ] ++
-    
-    option (nonTerminal "init_declarator_list" [ "declarator_varname" ]) ++
-    option (nonTerminal "init_declarator_list" [ "declarator_typedefname" ]) ++
-    option "general_identifier" ++
-    option "struct_declarator_list" ++
-    option "declarator" ++
-    option "general_identifier" ++
-    option "type_qualifier_list" ++
-    option "assignment_expression" ++
-    option "type_qualifier_list" ++
-    option "identifier_list" ++
-    option "pointer" ++
-    option "abstract_declarator" ++
-    option "direct_abstract_declarator" ++
-    option "assignment_expression" ++
-    option (nonTerminal "scoped" [ "parameter_type_list" ]) ++
-    option "designation" ++
-    option "designator_list" ++
-    option "block_item_list" ++
-    option "expression" ++
-    option "declaration_list" ++ 
+  -- (-)?      
+  option "argument_expression_list" ++
+  -- option "comma"                    ++    -- ","?
+  [ ("option_comma -> " , noAction, Nothing)
+  , ("option_comma -> ,", noAction, Nothing)
+  ] ++
 
+  -- option "comma_dotdotdot"          ++    -- ", ..."?
+  [ ("option_comma_dotdotdot -> "     , noAction, Nothing)
+  , ("option_comma_dotdotdot -> , ...", noAction, Nothing)
+  ] ++
+
+  option (nonTerminal "init_declarator_list" [ "declarator_varname" ]) ++
+  option (nonTerminal "init_declarator_list" [ "declarator_typedefname" ]) ++
+  option "general_identifier" ++
+  option "struct_declarator_list" ++
+  option "declarator" ++
+  option "general_identifier" ++
+  option "type_qualifier_list" ++
+  option "assignment_expression" ++
+  option "type_qualifier_list" ++
+  option "identifier_list" ++
+  option "pointer" ++
+  option "abstract_declarator" ++
+  option "direct_abstract_declarator" ++
+  option "assignment_expression" ++
+  option (nonTerminal "scoped" [ "parameter_type_list" ]) ++
+  option "designation" ++
+  option "designator_list" ++
+  option "block_item_list" ++
+  option "expression" ++
+  option "declaration_list" ++ 
+
+  map ruleWithNoAction (
     -- list_eq1
     list_eq1 "type_specifier_unique" "declaration_specifier" ++
     list "declaration_specifier" ++

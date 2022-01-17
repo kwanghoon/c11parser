@@ -32,13 +32,18 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , containers
+    , mtl
     , regex-tdfa >=1.3.1.1
+    , transformers
     , yapb >=0.1.4
   default-language: Haskell2010
 
 executable c11parser-exe
   main-is: Main.hs
   other-modules:
+      Context
+      Declarator
       Lexer
       Parser
       Run
@@ -52,7 +57,10 @@ executable c11parser-exe
   build-depends:
       base >=4.7 && <5
     , c11parser
+    , containers
+    , mtl
     , regex-tdfa >=1.3.1.1
+    , transformers
     , yapb >=0.1.4
   default-language: Haskell2010
 
@@ -67,6 +75,9 @@ test-suite c11parser-test
   build-depends:
       base >=4.7 && <5
     , c11parser
+    , containers
+    , mtl
     , regex-tdfa >=1.3.1.1
+    , transformers
     , yapb >=0.1.4
   default-language: Haskell2010

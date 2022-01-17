@@ -27,7 +27,7 @@
 0	unsigned	Shift 39
 0	void	Shift 41
 0	volatile	Shift 49
-1	$	Accept
+1	EOF	Accept
 2	(	Reduce 3
 2	)	Reduce 3
 2	*	Reduce 3
@@ -1831,8 +1831,8 @@
 88	volatile	Reduce 141
 88	{	Reduce 257
 89	{	Shift 126
-90	$	Reduce 238
-91	$	Reduce 239
+90	EOF	Reduce 238
+91	EOF	Reduce 239
 92	NAME	Reduce 244
 92	_Alignas	Reduce 244
 92	_Atomic	Reduce 244

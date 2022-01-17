@@ -1,14 +1,20 @@
-module Lexer(lexerSpec) where
+module Lexer(c_lexer, init_c_lexer_state, lexerSpec, Lexer_State) where
 
 import Prelude hiding (EQ,GT,LT)
 import CommonParserUtil
 import Token
-import Text.Regex.TDFA
+import Terminal
+import Context
 
-mkFn :: Token -> LexAction Token IO ()    -- (String -> Maybe Token)
+import Text.Regex.TDFA
+import qualified Control.Monad.Trans.State.Lazy as ST
+import Control.Monad.Trans.Class
+
+
+mkFn :: Token -> LexAction Token IO LPS -- (String -> Maybe Token)
 mkFn tok = \text -> return $ Just tok
 
-skip :: LexAction Token IO ()             -- String -> Maybe Token
+skip :: LexAction Token IO LPS          -- String -> Maybe Token
 skip = \text -> return Nothing
 
 
@@ -130,7 +136,7 @@ escape_sequence =
 
 
 -- | Lexical analysis specification
-lexerSpec :: LexerSpec Token IO ()
+lexerSpec :: LexerSpec Token IO LPS
 lexerSpec = LexerSpec
   {
     endOfToken    = EOF,
@@ -250,3 +256,46 @@ lexerSpec = LexerSpec
       ]
 
   }
+
+-- | An enriched lexer
+
+init_c_lexer_state = SRegular
+     
+c_lexer flag =
+  do (lps,line,col,text) <- ST.get
+     let st = lexer_state lps
+
+     case st of
+       SIdent id -> 
+         do ST.put (lps{lexer_state=SRegular},line,col,text)
+            
+            b <- is_typedefname id
+
+            if b
+              then return $ Terminal (fromToken TYPE) line col (Just TYPE)
+              else return $ Terminal (fromToken VARIABLE) line col (Just VARIABLE)
+
+       _ -> -- SAtomic or SRegular   Todo: Not support SAtomic
+         do terminal <- aLexer lexerSpec flag
+
+            (lps_,line_,col_,text_) <- ST.get
+            
+            let maybeToken = terminalToMaybeToken terminal
+            let id         = terminalToSymbol     terminal
+            
+            case (st, maybeToken) of
+              (_, Just NAME) ->
+                do ST.put (lps_{lexer_state=SIdent id},line_,col_,text_)
+                   return terminal
+
+              (_, _) ->
+                do ST.put (lps_{lexer_state=SRegular},line_,col_,text_)
+                   return terminal
+
+     
+-- c_lexer_with (SAtomic)   = x
+-- c_lexer_with (SRegular)  = x
+
+--   do terminal <- aLexer lexerSpec
+     
+

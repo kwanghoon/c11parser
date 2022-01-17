@@ -7,6 +7,7 @@ import Token
 import Expr
 import Lexer
 import Parser
+import Context
 
 import EmacsServer
 import SynCompInterface
@@ -46,7 +47,10 @@ maxLevel = 10000
 -- | computeCand
 computeCand :: Bool -> String -> String -> Bool -> IO [EmacsDataItem]
 computeCand debug programTextUptoCursor programTextAfterCursor isSimpleMode =
-  ((do ast <- parsing True parserSpec ((),1,1,programTextUptoCursor) (aLexer lexerSpec)
+  ((do ast <- parsing True parserSpec
+                (LPS {lexer_state=init_c_lexer_state,
+                        name_set=emptyContext},1,1,programTextUptoCursor)
+                  c_lexer (fromToken (endOfToken lexerSpec))
        successfullyParsed)
     `catch` \e ->
       case e :: ParseError Token AST () of
