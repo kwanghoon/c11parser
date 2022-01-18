@@ -21,13 +21,15 @@ skip = \text -> return Nothing
 -- | Utilities
 infixl 4 <|>
 
-x <|> y = "(" ++ x ++ "|" ++ y ++ ")"
+x <|> y = paren (paren x ++ "|" ++ paren y)     -- "(" ++ x ++ "|" ++ y ++ ")"
 
-zeroOrMore x = "(" ++ x ++ ")*"
+zeroOrMore x = paren x ++ "*"     -- "(" ++ x ++ ")*"
 
-oneOrMore x  = "(" ++ x ++ ")+"
+oneOrMore x  = paren x ++ "+"     -- "(" ++ x ++ ")+"
 
-opt x = "(" ++ x ++ ")?"
+opt x = paren x ++ "?"            -- "(" ++ x ++ ")?"
+
+paren x = "(" ++ x ++ ")"
 
 -- | Identifiers
 digit             = "[0-9]"
@@ -49,7 +51,8 @@ identifier_nondigit =
   <|>  universal_character_name
 
 identifier =
-  identifier_nondigit ++ zeroOrMore ( identifier_nondigit  <|>  digit )
+  identifier_nondigit
+    ++ zeroOrMore ( identifier_nondigit  <|>  digit )
 
 -- | Whitespaces
 
@@ -144,23 +147,28 @@ lexerSpec = LexerSpec
       [
         (oneOrMore whitespace_char_no_newline, skip),
         ("\n", skip),
---        ("\\/\\*(\\*(?!\\/)|[^*])*\\*\\/", skip),   -- rewritten /* as \/\*(\*(?!\/)|[^*])*\*\/
-        ("//" ++ zeroOrMore "^\\n" ++ "\\n", skip), -- rewritten // as this
+        ("/\\*[^(\\*)]*\\*/", skip),   -- rewritten /* as this. (Todo: multi-line comment bug!)
+        ("//" ++ zeroOrMore "[^\n]" ++ "[\n]", skip), -- rewritten // as this
 
         -- ("#" ++ zeroOrMore "^(\\n)" ++ "\\n", skip), -- ignore preprocessed lines Todo: Make it work!
 
-        (integer_constant, mkFn CONSTANT),
-        (decimal_floating_constant, mkFn CONSTANT),
-        (hexadecimal_floating_constant, mkFn CONSTANT),
+        -- -- A hack!
+        -- ("\\(", mkFn LPAREN ),
+        -- (":", mkFn COLON ),
+        -- ("\\+", mkFn PLUS ),
         
-        -- (preprocessing_number,
-        --  error "These characters form a preprocessor number, but not a constant"),
+        -- (integer_constant, mkFn CONSTANT),
+        -- (decimal_floating_constant, mkFn CONSTANT),
+        -- (hexadecimal_floating_constant, mkFn CONSTANT),
         
-        -- (("[LuU]" <|> "") ++ "'", mkFn CONSTANT ),
-        (opt "[LuU]" ++ "'[^']*'", mkFn CONSTANT ),   -- rewritten as "\"[^\"]*\""  Todo: \'
+        -- -- (preprocessing_number,
+        -- --  error "These characters form a preprocessor number, but not a constant"),
         
-        -- (("[LuU]" <|> "" <|> "u8") ++ "\"",  mkFn STRING_LITERAL),  
-        (opt ("[LuU]" <|> "u8") ++ "\"[^\"]*\"",  mkFn STRING_LITERAL),  -- rewritten as "\"[^\"]*\""  Todo: \"
+        -- -- (("[LuU]" <|> "") ++ "'", mkFn CONSTANT ),
+        -- (opt "[LuU]" ++ "'[^']*'", mkFn CONSTANT ),   -- rewritten as "\"[^\"]*\""  Todo: \'
+        
+        -- -- (("[LuU]" <|> "" <|> "u8") ++ "\"",  mkFn STRING_LITERAL),  
+        -- (opt ("[LuU]" <|> "u8") ++ "\"[^\"]*\"",  mkFn STRING_LITERAL),  -- rewritten as "\"[^\"]*\""  Todo: \"
         
         ("\\.\\.\\.", mkFn ELLIPSIS ),
         ("\\+=", mkFn ADD_ASSIGN ),
@@ -252,6 +260,23 @@ lexerSpec = LexerSpec
         ("void", mkFn VOID),
         ("volatile", mkFn VOLATILE),
         ("while", mkFn WHILE),
+
+        -- A hack!
+
+        (integer_constant, mkFn CONSTANT),
+        (decimal_floating_constant, mkFn CONSTANT),
+        (hexadecimal_floating_constant, mkFn CONSTANT),
+        
+        -- (preprocessing_number,
+        --  error "These characters form a preprocessor number, but not a constant"),
+        
+        -- (("[LuU]" <|> "") ++ "'", mkFn CONSTANT ),
+        (opt "[LuU]" ++ "'[^']*'", mkFn CONSTANT ),   -- rewritten as "\"[^\"]*\""  Todo: \'
+        
+        -- (("[LuU]" <|> "" <|> "u8") ++ "\"",  mkFn STRING_LITERAL),  
+        (opt ("[LuU]" <|> "u8") ++ "\"[^\"]*\"",  mkFn STRING_LITERAL),  -- rewritten as "\"[^\"]*\""  Todo: \"
+        
+        
         (identifier, mkFn NAME)
       ]
 
