@@ -91,8 +91,8 @@ digit_sequence = oneOrMore digit
 floating_suffix = "[flFL]"
 
 fractional_constant =
-       opt digit_sequence ++ "." ++ digit_sequence
-  <|>  digit_sequence ++ "."
+       opt digit_sequence ++ "\\." ++ digit_sequence
+  <|>  digit_sequence ++ "\\."
   
 exponent_part = "[eE]" ++ opt sign ++ digit_sequence
 
@@ -103,8 +103,8 @@ decimal_floating_constant =
 hexadecimal_digit_sequence = oneOrMore hexadecimal_digit
 
 hexadecimal_fractional_constant =
-       opt hexadecimal_digit_sequence ++ "." ++ hexadecimal_digit_sequence
-  <|>  hexadecimal_digit_sequence ++ "."
+       opt hexadecimal_digit_sequence ++ "\\." ++ hexadecimal_digit_sequence
+  <|>  hexadecimal_digit_sequence ++ "\\."
 
 binary_exponent_part = "[pP]" ++ opt sign ++ digit_sequence
 
@@ -116,8 +116,8 @@ hexadecimal_floating_constant =
 
 -- | Preprocessing numbersa
 
-preprocessing_number = opt "." ++ "[0-9]" ++
-  zeroOrMore ("[0-9A-Za-z_.]"  <|>  "[eEpP][+-]")
+preprocessing_number = opt "\\." ++ "[0-9]" ++
+  zeroOrMore ("[0-9A-Za-z_\\.]"  <|>  "[eEpP][+-]")
 
 -- | Character and string constants
 simple_escape_sequence =
@@ -178,7 +178,7 @@ lexerSpec = LexerSpec
         ("%=", mkFn MOD_ASSIGN ),
         ("\\|=", mkFn OR_ASSIGN ),
         ("&=", mkFn AND_ASSIGN ),
-        ("^=", mkFn XOR_ASSIGN ),
+        ("\\^=", mkFn XOR_ASSIGN ),
         ("<<=", mkFn LEFT_ASSIGN ),
         (">>=", mkFn RIGHT_ASSIGN ),
         ("<<", mkFn LEFT ),
@@ -233,8 +233,9 @@ lexerSpec = LexerSpec
         ("const", mkFn CONST ),
         ("continue", mkFn CONTINUE ),
         ("default", mkFn DEFAULT ),
-        ("do", mkFn DO ),
+--        ("do", mkFn DO ),
         ("double", mkFn DOUBLE ),
+        ("do", mkFn DO ),        
         ("else", mkFn ELSE ),
         ("enum", mkFn ENUM ),
         ("extern", mkFn EXTERN ),

@@ -1,43 +1,46 @@
-khchoi@khchoi-ThinkPad-X1-Carbon-5th:~/work/lang/haskell/c11parser$ find example -name "*.c" -print -exec stack exec -- c11parser-exe \{\} \;
+find example -name "*.c" -print -exec stack exec -- c11parser-exe \{\} \;
 example/dangling_else_misleading.fail.c
 Parsing...
-c11parser-exe: NotFoundAction: State 401 : (1 at (4, 5): CONSTANT Line 4 Column 7 : )
+c11parser-exe: NotFoundAction: State 316 : x at (8, 11): NAME Line 8 Column 12 : ;
 example/local_scope.c
 Parsing...
-c11parser-exe: NotFoundAction: State 57 : = at (4, 7): ^= Line 4 Column 8 :  1; // T is a type
+Done.
+example/helloworld.c
+Parsing...
+Done.
 example/parameter_declaration_ambiguity.c
 Parsing...
 Done.
 example/dangling_else.c
 Parsing...
-c11parser-exe: NotFoundAction: State 401 : (0 at (3, 5): CONSTANT Line 3 Column 7 : )
+Done.
 example/local_typedef.c
 Parsing...
-c11parser-exe: NotFoundAction: State 34 : T1 at (2, 13): CONSTANT Line 2 Column 15 : ;      // Declaration of type T1 as int
+Done.
 example/function_parameter_scope_extends.c
 Parsing...
-c11parser-exe: NotFoundAction: State 57 : = at (6, 10): ^= Line 6 Column 11 :  T+U+V+x[0]+y;
+Done.
 example/namespaces.c
 Parsing...
-c11parser-exe: NotFoundAction: State 57 : = at (8, 14): ^= Line 8 Column 15 :  { .T = 1 };
+Done.
 example/long-long-struct.c
 Parsing...
 Done.
 example/c1x-alignas.c
 Parsing...
-c11parser-exe: NotFoundAction: State 52 : (4 at (1, 9): CONSTANT Line 1 Column 11 : ) char c1;
+Done.
 example/expressions.c
 Parsing...
-c11parser-exe: NotFoundAction: State 34 : )4 at (5, 13): CONSTANT Line 5 Column 15 : ;   // cast.
+Done.
 example/declarators.c
 Parsing...
-c11parser-exe: NotFoundAction: State 34 : a1 at (1, 12): CONSTANT Line 1 Column 14 : [];
+Done.
 example/bitfield_declaration_ambiguity.c
 Parsing...
-c11parser-exe: NotFoundAction: State 96 : :3 at (4, 13): CONSTANT Line 4 Column 15 : ; // bit-field named T with type unsigned
+Done.
 example/statements.c
 Parsing...
-c11parser-exe: NotFoundAction: State 401 : (0 at (6, 6): CONSTANT Line 6 Column 8 : ) { if (1) {} } else { }
+Done.
 example/c11-noreturn.c
 Parsing...
 Done.
@@ -46,43 +49,43 @@ Parsing...
 Done.
 example/declarator_visibility.c
 Parsing...
-c11parser-exe: NotFoundAction: State 120 : T1 at (2, 16): CONSTANT Line 2 Column 18 : (T);   // T is visible when declaring T1.
+c11parser-exe: NotFoundAction: State 178 : TYPE at (12, 26): TYPE Line 12 Column 26 : );
 example/aligned_struct_c18.c
 Parsing...
 Done.
 example/loop_scopes.c
 Parsing...
-c11parser-exe: NotFoundAction: State 57 : = at (5, 13): ^= Line 5 Column 14 :  0; sizeof(enum {U}); ) x = U+T;
+c11parser-exe: NotFoundAction: State 178 : TYPE at (5, 45): TYPE Line 5 Column 45 : ;
 example/designator.c
 Parsing...
-c11parser-exe: NotFoundAction: State 390 : = at (3, 9): ^= Line 3 Column 10 :  {
+Done.
 example/parameter_declaration_ambiguity.test.c
 Parsing...
 Done.
 example/function_parameter_scope.c
 Parsing...
-c11parser-exe: NotFoundAction: State 114 : +1 at (6, 9): CONSTANT Line 6 Column 11 : ]; // T and U again denote types; V remains visible
+Done.
 example/atomic_parenthesis.c
 Parsing...
 Done.
 example/function-decls.c
 Parsing...
-c11parser-exe: NotFoundAction: State 111 : do at (5, 45): do Line 5 Column 47 : uble Y)))(void* Z));
+Done.
 example/argument_scope.c
 Parsing...
 Done.
 example/enum_shadows_typedef.c
 Parsing...
-c11parser-exe: NotFoundAction: State 57 : = at (4, 9): ^= Line 4 Column 10 :  (int)(enum {T})1;
+Done.
 example/struct-recursion.c
 Parsing...
-c11parser-exe: NotFoundAction: State 43 : s1 at (6, 8): CONSTANT Line 6 Column 10 :  { struct s2 *A; };
+Done.
 example/typedef_star.c
 Parsing...
 Done.
 example/enum.c
 Parsing...
-c11parser-exe: NotFoundAction: State 202 : = at (2, 21): ^= Line 2 Column 22 :  a } foo;
+Done.
 example/c-namespace.c
 Parsing...
 Done.
@@ -103,29 +106,26 @@ Parsing...
 c11parser-exe: LexError 2 1 "#include <stdio.h>"
 example/bitfield_declaration_ambiguity.fail.c
 Parsing...
-c11parser-exe: NotFoundAction: State 96 : :3 at (3, 10): CONSTANT Line 3 Column 12 : ;
+Done.
 example/control-scope.c
 Parsing...
 Done.
 example/enum_constant_visibility.c
 Parsing...
-c11parser-exe: NotFoundAction: State 202 : = at (5, 19): ^= Line 5 Column 20 :  T+1})1 + T;
+Done.
 example/declaration_ambiguity.c
 Parsing...
 Done.
 example/dangling_else_lookahead.c
 Parsing...
-c11parser-exe: NotFoundAction: State 401 : (1 at (5, 7): CONSTANT Line 5 Column 9 : );
+Done.
 example/bitfield_declaration_ambiguity.ok.c
 Parsing...
-c11parser-exe: NotFoundAction: State 96 : :3 at (3, 13): CONSTANT Line 3 Column 15 : ;
+Done.
 example/dangling_else_lookahead.if.c
 Parsing...
-c11parser-exe: NotFoundAction: State 287 : = at (4, 26): ^= Line 4 Column 27 :  0);
+Done.
 example/if_scopes.c
-Parsing...
-c11parser-exe: NotFoundAction: State 57 : = at (12, 9): ^= Line 12 Column 10 :  (int)T;
-example/block_scope_no_comment.c
 Parsing...
 Done.
 example/multiline_comments.c
@@ -134,3 +134,4 @@ Done.
 example/no_local_scope.c
 Parsing...
 Done.
+khchoi@khchoi-ThinkPad-X1-Carbon-5th:~/work/lang/haskell/c11parser$ 
