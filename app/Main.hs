@@ -53,7 +53,7 @@ computeCand debug programTextUptoCursor programTextAfterCursor isSimpleMode =
                   c_lexer (fromToken (endOfToken lexerSpec))
        successfullyParsed)
     `catch` \e ->
-      case e :: ParseError Token AST () of
+      case e :: ParseError Token AST LPS of
         _ ->
           do handleParseError (
                defaultHandleParseError {
