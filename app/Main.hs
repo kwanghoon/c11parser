@@ -8,6 +8,7 @@ import Expr
 import Lexer
 import Parser
 import Context
+import SynCompAlgorithm
 
 import EmacsServer
 import SynCompInterface
@@ -55,8 +56,11 @@ computeCand debug programTextUptoCursor programTextAfterCursor isSimpleMode =
     `catch` \e ->
       case e :: ParseError Token AST LPS of
         _ ->
-          do handleParseError (
-               defaultHandleParseError {
+          do compCandidates <- chooseCompCandidatesFn
+            
+             handleParseError
+               compCandidates
+               (defaultHandleParseError {
                    debugFlag=debug,
                    searchMaxLevel=maxLevel,
                    simpleOrNested=isSimpleMode,
