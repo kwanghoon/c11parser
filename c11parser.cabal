@@ -36,7 +36,7 @@ library
     , mtl
     , regex-tdfa >=1.3.1.1
     , transformers
-    , yapb >=0.1.4
+    , yapb >=0.2.1
   default-language: Haskell2010
 
 executable c11parser-exe
@@ -61,7 +61,7 @@ executable c11parser-exe
     , mtl
     , regex-tdfa >=1.3.1.1
     , transformers
-    , yapb >=0.1.4
+    , yapb >=0.2.1
   default-language: Haskell2010
 
 test-suite c11parser-test
@@ -79,5 +79,5 @@ test-suite c11parser-test
     , mtl
     , regex-tdfa >=1.3.1.1
     , transformers
-    , yapb >=0.1.4
+    , yapb >=0.2.1
   default-language: Haskell2010
