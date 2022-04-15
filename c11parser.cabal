@@ -43,6 +43,7 @@ library
 executable c11parser-exe
   main-is: Main.hs
   other-modules:
+      C11Filter
       Context
       Declarator
       Lexer
@@ -71,6 +72,7 @@ test-suite c11parser-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      C11Filter
       Context
       Declarator
       Lexer

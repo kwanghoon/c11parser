@@ -8,6 +8,7 @@ import Token
 import Expr
 import Context
 import Declarator
+import C11Filter
 
 -- | Utility
 rule prodRule action               = (prodRule, action, Nothing  )
@@ -207,7 +208,7 @@ parserSpec = ParserSpec
     parserSpecFile = "mygrammar.grm",
     genparserexe = "yapb-exe",
 
-    synCompSpec = Nothing
+    synCompSpec = Just (SynCompSpec {isAbleToSearch=canSearch})
   }
 
 
