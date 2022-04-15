@@ -35,12 +35,10 @@ spec = hspec $ do
             }
     
     it ("[Benchmark1] " ++ benchmark1) $
-      do results <- computeCand False benchmark1 "" config_simple
-         mapM_ (item benchmark1 config) [1..max_gs_level] 
+      do mapM_ (item benchmark1 config) [1..max_gs_level] 
 
     it ("[Benchmark2] " ++ benchmark2) $
-      do results <- computeCand False benchmark2 "" config_simple
-         mapM_ (item benchmark2 config) [1..max_gs_level] 
+      do mapM_ (item benchmark2 config) [1..max_gs_level] 
 
 item benchmark init_config gslevel = 
       do let test_config = init_config{config_GS_LEVEL=gslevel}
