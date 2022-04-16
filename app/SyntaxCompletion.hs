@@ -34,7 +34,7 @@ maxLevel = 10000
 -- | computeCand
 computeCand :: Bool -> String -> String -> Bool -> IO [EmacsDataItem]
 computeCand debug programTextUptoCursor programTextAfterCursor isSimpleMode =
-  ((do ast <- parsing True parserSpec
+  ((do ast <- parsing False parserSpec
                 (LPS {lexer_state=init_c_lexer_state,
                         name_set=emptyContext},1,1,programTextUptoCursor)
                   c_lexer (fromToken (endOfToken lexerSpec))

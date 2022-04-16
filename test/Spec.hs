@@ -15,9 +15,9 @@ import Data.Maybe (isJust)
 import System.IO (readFile)
 
 spec = hspec $ do
-  describe "Testing examples/exp/benchmarks" $ do
-    let benchmark1 = "int main() {\n  if ( x "          -- examples/exp/benchmark1.c
-    let benchmark2 = "int main() {\n  if ( x < 123 ) "  -- examples/exp/benchmark2.c
+  describe "c11" $ do
+    -- let benchmark1 = "int main() {\n  if ( x "          -- examples/exp/benchmark1.c
+    -- let benchmark2 = "int main() {\n  if ( x < 123 ) "  -- examples/exp/benchmark2.c
 
     let config_simple = True
     let max_gs_level  = 9
@@ -34,17 +34,33 @@ spec = hspec $ do
               config_ALGORITHM    = 3
             }
     
-    it ("[Benchmark1] " ++ benchmark1) $
-      do mapM_ (item benchmark1 config) [1..max_gs_level] 
+    let benchmark1 = "./examples/exp/benchmark1.c"
+    
+    it ("[Benchmark1] ") $
+      do mapM_ (item benchmark1 config) [1..max_gs_level]  -- Max GS level (9) for C11
 
-    it ("[Benchmark2] " ++ benchmark2) $
-      do mapM_ (item benchmark2 config) [1..max_gs_level] 
+    let benchmark2 = "./examples/exp/benchmark2.c"
+    
+    it ("[Benchmark2] ") $
+      do mapM_ (item benchmark2 config) [1..max_gs_level]  -- Max GS level (9) for C11
 
-item benchmark init_config gslevel = 
+    let benchmark3 = "./examples/exp/benchmark3.c"
+
+    it ("[Benchmark3] ") $
+      do mapM_ (item benchmark3 config) [1..max_gs_level]  -- Max GS level (9) for C11
+
+    let benchmark4 = "./examples/exp/benchmark4.c"
+    
+    it ("[Benchmark4] ") $
+      do mapM_ (item benchmark4 config) [1..max_gs_level]  -- Max GS level (9) for C11
+
+
+item benchmark_file init_config gslevel = 
       do let test_config = init_config{config_GS_LEVEL=gslevel}
          putStrLn (show test_config)
          
          configMaybe <- readConfig
+         benchmark <- readFile benchmark_file
          case configMaybe of
            Just config ->
              do writeConfig test_config  -- set
