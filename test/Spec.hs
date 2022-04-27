@@ -20,7 +20,7 @@ spec = hspec $ do
     -- let benchmark2 = "int main() {\n  if ( x < 123 ) "  -- examples/exp/benchmark2.c
 
     let config_simple = True
-    let max_gs_level  = 9
+    let max_gs_level  = 9             -- Max GS level (9) for C11
     
     let config =
           Configuration
@@ -37,22 +37,22 @@ spec = hspec $ do
     let benchmark1 = "./examples/exp/benchmark1.c"
     
     it ("[Benchmark1] ") $
-      do mapM_ (item benchmark1 config) [1..max_gs_level]  -- Max GS level (9) for C11
+      do mapM_ (item benchmark1 config) [1..max_gs_level]  
 
     let benchmark2 = "./examples/exp/benchmark2.c"
     
     it ("[Benchmark2] ") $
-      do mapM_ (item benchmark2 config) [1..max_gs_level]  -- Max GS level (9) for C11
+      do mapM_ (item benchmark2 config) [1..max_gs_level]  
 
     let benchmark3 = "./examples/exp/benchmark3.c"
 
     it ("[Benchmark3] ") $
-      do mapM_ (item benchmark3 config) [1..max_gs_level]  -- Max GS level (9) for C11
+      do mapM_ (item benchmark3 config) [1..max_gs_level]  
 
     let benchmark4 = "./examples/exp/benchmark4.c"
     
     it ("[Benchmark4] ") $
-      do mapM_ (item benchmark4 config) [1..max_gs_level]  -- Max GS level (9) for C11
+      do mapM_ (item benchmark4 config) [1..max_gs_level]  
 
 
 item benchmark_file init_config gslevel = 
