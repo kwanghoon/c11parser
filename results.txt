@@ -16,7 +16,7 @@ Installing executable c11parser-exe in /home/choi/work/lang/haskell/syncomp/c11p
 Registering library for c11parser-0.1.0.0..
 c11parser> test (suite: c11parser-test)
 
-Candidates:
+Candidates: bm1-1
 [White Terminal ++]
 [White Terminal --]
 [White Terminal %=]
@@ -71,7 +71,7 @@ Candidates:
 ["!="]
 ["=="]
 
-Candidates:
+Candidates: bm1-2
 [White Terminal ++]
 [White Terminal --]
 [White Terminal ->,White Nonterminal general_identifier]
@@ -144,7 +144,7 @@ Candidates:
 [")","..."]
 [",","..."]
 
-Candidates:
+Candidates: bm1-3
 [White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
 [White Terminal ++]
 [White Terminal --]
@@ -221,86 +221,7 @@ Candidates:
 [")","..."]
 [",","..."]
 
-Candidates:
-[White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
-[White Terminal ++]
-[White Terminal --]
-[White Terminal ->,White Nonterminal general_identifier]
-[White Terminal .,White Nonterminal general_identifier]
-[White Terminal [,White Nonterminal expression,White Terminal ]]
-[White Terminal %=]
-[White Terminal &=]
-[White Terminal *=]
-[White Terminal +=]
-[White Terminal -=]
-[White Terminal /=]
-[White Terminal <<=]
-[White Terminal =]
-[White Terminal >>=]
-[White Terminal ^=]
-[White Terminal |=]
-[White Terminal %]
-[White Terminal *]
-[White Terminal /]
-[White Terminal +]
-[White Terminal -]
-[White Terminal <<]
-[White Terminal >>]
-[White Terminal <]
-[White Terminal <=]
-[White Terminal >]
-[White Terminal >=]
-[White Terminal !=]
-[White Terminal ==]
-[White Terminal &,White Nonterminal equality_expression]
-[White Terminal ^,White Nonterminal and_expression]
-[White Terminal |,White Nonterminal exclusive_or_expression]
-[White Terminal &&,White Nonterminal inclusive_or_expression]
-[White Terminal ?,White Nonterminal expression,White Terminal :,White Nonterminal conditional_expression]
-[White Terminal ||,White Nonterminal logical_and_expression]
-[White Terminal ),White Nonterminal scoped_statement]
-[White Terminal ,,White Nonterminal assignment_expression]
-
-["(","...",")"]
-["++"]
-["--"]
-["->","..."]
-[".","..."]
-["[","...","]"]
-["%="]
-["&="]
-["*="]
-["+="]
-["-="]
-["/="]
-["<<="]
-["="]
-[">>="]
-["^="]
-["|="]
-["%"]
-["*"]
-["/"]
-["+"]
-["-"]
-["<<"]
-[">>"]
-["<"]
-["<="]
-[">"]
-[">="]
-["!="]
-["=="]
-["&","..."]
-["^","..."]
-["|","..."]
-["&&","..."]
-["?","...",":","..."]
-["||","..."]
-[")","..."]
-[",","..."]
-
-Candidates:
+Candidates: bm1-4
 [White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
 [White Terminal ++]
 [White Terminal --]
@@ -379,7 +300,7 @@ Candidates:
 [")","..."]
 [",","..."]
 
-Candidates:
+Candidates: bm1-5
 [White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
 [White Terminal ++]
 [White Terminal --]
@@ -458,7 +379,7 @@ Candidates:
 [")","..."]
 [",","..."]
 
-Candidates:
+Candidates: bm1-6
 [White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
 [White Terminal ++]
 [White Terminal --]
@@ -537,7 +458,7 @@ Candidates:
 [")","..."]
 [",","..."]
 
-Candidates:
+Candidates: bm1-7
 [White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
 [White Terminal ++]
 [White Terminal --]
@@ -616,7 +537,7 @@ Candidates:
 [")","..."]
 [",","..."]
 
-Candidates:
+Candidates: bm1-8
 [White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
 [White Terminal ++]
 [White Terminal --]
@@ -695,7 +616,86 @@ Candidates:
 [")","..."]
 [",","..."]
 
-Candidates:
+Candidates: bm1-9
+[White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
+[White Terminal ++]
+[White Terminal --]
+[White Terminal ->,White Nonterminal general_identifier]
+[White Terminal .,White Nonterminal general_identifier]
+[White Terminal [,White Nonterminal expression,White Terminal ]]
+[White Terminal %=]
+[White Terminal &=]
+[White Terminal *=]
+[White Terminal +=]
+[White Terminal -=]
+[White Terminal /=]
+[White Terminal <<=]
+[White Terminal =]
+[White Terminal >>=]
+[White Terminal ^=]
+[White Terminal |=]
+[White Terminal %]
+[White Terminal *]
+[White Terminal /]
+[White Terminal +]
+[White Terminal -]
+[White Terminal <<]
+[White Terminal >>]
+[White Terminal <]
+[White Terminal <=]
+[White Terminal >]
+[White Terminal >=]
+[White Terminal !=]
+[White Terminal ==]
+[White Terminal &,White Nonterminal equality_expression]
+[White Terminal ^,White Nonterminal and_expression]
+[White Terminal |,White Nonterminal exclusive_or_expression]
+[White Terminal &&,White Nonterminal inclusive_or_expression]
+[White Terminal ?,White Nonterminal expression,White Terminal :,White Nonterminal conditional_expression]
+[White Terminal ||,White Nonterminal logical_and_expression]
+[White Terminal ),White Nonterminal scoped_statement]
+[White Terminal ,,White Nonterminal assignment_expression]
+
+["(","...",")"]
+["++"]
+["--"]
+["->","..."]
+[".","..."]
+["[","...","]"]
+["%="]
+["&="]
+["*="]
+["+="]
+["-="]
+["/="]
+["<<="]
+["="]
+[">>="]
+["^="]
+["|="]
+["%"]
+["*"]
+["/"]
+["+"]
+["-"]
+["<<"]
+[">>"]
+["<"]
+["<="]
+[">"]
+[">="]
+["!="]
+["=="]
+["&","..."]
+["^","..."]
+["|","..."]
+["&&","..."]
+["?","...",":","..."]
+["||","..."]
+[")","..."]
+[",","..."]
+
+Candidates: bm2-1
 [White Terminal !]
 [White Terminal &]
 [White Terminal *]
@@ -728,7 +728,7 @@ Candidates:
 [";"]
 ["..."]
 
-Candidates:
+Candidates: bm2-2
 [White Terminal !]
 [White Terminal &]
 [White Terminal *]
@@ -782,7 +782,7 @@ Candidates:
 [";"]
 ["..."]
 
-Candidates:
+Candidates: bm2-3
 [White Terminal !]
 [White Terminal &]
 [White Terminal (,White Nonterminal expression,White Terminal )]
@@ -846,7 +846,7 @@ Candidates:
 [";"]
 ["{","...","}"]
 
-Candidates:
+Candidates: bm2-4
 [White Terminal !]
 [White Terminal &]
 [White Terminal (,White Nonterminal type_name,White Terminal ),White Nonterminal cast_expression]
@@ -916,7 +916,7 @@ Candidates:
 [";"]
 ["{","...","}"]
 
-Candidates:
+Candidates: bm2-5
 [White Terminal !]
 [White Terminal &]
 [White Terminal (,White Nonterminal type_name,White Terminal ),White Nonterminal cast_expression]
@@ -992,7 +992,7 @@ Candidates:
 ["while","(","...",")","..."]
 ["{","...","}"]
 
-Candidates:
+Candidates: bm2-6
 [White Terminal !]
 [White Terminal &]
 [White Terminal (,White Nonterminal type_name,White Terminal ),White Nonterminal cast_expression]
@@ -1068,7 +1068,7 @@ Candidates:
 ["while","(","...",")","..."]
 ["{","...","}"]
 
-Candidates:
+Candidates: bm2-7
 [White Terminal !]
 [White Terminal &]
 [White Terminal (,White Nonterminal type_name,White Terminal ),White Terminal {,White Nonterminal initializer_list,White Nonterminal option_comma,White Terminal }]
@@ -1146,7 +1146,7 @@ Candidates:
 ["while","(","...",")","..."]
 ["{","...","}"]
 
-Candidates:
+Candidates: bm2-8
 [White Terminal !]
 [White Terminal &]
 [White Terminal (,White Nonterminal type_name,White Terminal ),White Terminal {,White Nonterminal initializer_list,White Nonterminal option_comma,White Terminal }]
@@ -1226,7 +1226,7 @@ Candidates:
 ["while","(","...",")","..."]
 ["{","...","}"]
 
-Candidates:
+Candidates: bm2-9
 [White Terminal !]
 [White Terminal &]
 [White Terminal (,White Nonterminal type_name,White Terminal ),White Terminal {,White Nonterminal initializer_list,White Nonterminal option_comma,White Terminal }]
@@ -1308,7 +1308,7 @@ Candidates:
 ["while","(","...",")","..."]
 ["{","...","}"]
 
-Candidates:
+Candidates: bm3-1
 [White Terminal ++]
 [White Terminal --]
 [White Terminal %=]
@@ -1363,7 +1363,7 @@ Candidates:
 ["!="]
 ["=="]
 
-Candidates:
+Candidates: bm3-2
 [White Terminal ++]
 [White Terminal --]
 [White Terminal ->,White Nonterminal general_identifier]
@@ -1436,7 +1436,7 @@ Candidates:
 [")","..."]
 [",","..."]
 
-Candidates:
+Candidates: bm3-3
 [White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
 [White Terminal ++]
 [White Terminal --]
@@ -1513,86 +1513,7 @@ Candidates:
 [")","..."]
 [",","..."]
 
-Candidates:
-[White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
-[White Terminal ++]
-[White Terminal --]
-[White Terminal ->,White Nonterminal general_identifier]
-[White Terminal .,White Nonterminal general_identifier]
-[White Terminal [,White Nonterminal expression,White Terminal ]]
-[White Terminal %=]
-[White Terminal &=]
-[White Terminal *=]
-[White Terminal +=]
-[White Terminal -=]
-[White Terminal /=]
-[White Terminal <<=]
-[White Terminal =]
-[White Terminal >>=]
-[White Terminal ^=]
-[White Terminal |=]
-[White Terminal %]
-[White Terminal *]
-[White Terminal /]
-[White Terminal +]
-[White Terminal -]
-[White Terminal <<]
-[White Terminal >>]
-[White Terminal <]
-[White Terminal <=]
-[White Terminal >]
-[White Terminal >=]
-[White Terminal !=]
-[White Terminal ==]
-[White Terminal &,White Nonterminal equality_expression]
-[White Terminal ^,White Nonterminal and_expression]
-[White Terminal |,White Nonterminal exclusive_or_expression]
-[White Terminal &&,White Nonterminal inclusive_or_expression]
-[White Terminal ?,White Nonterminal expression,White Terminal :,White Nonterminal conditional_expression]
-[White Terminal ||,White Nonterminal logical_and_expression]
-[White Terminal ),White Nonterminal scoped_statement]
-[White Terminal ,,White Nonterminal assignment_expression]
-
-["(","...",")"]
-["++"]
-["--"]
-["->","..."]
-[".","..."]
-["[","...","]"]
-["%="]
-["&="]
-["*="]
-["+="]
-["-="]
-["/="]
-["<<="]
-["="]
-[">>="]
-["^="]
-["|="]
-["%"]
-["*"]
-["/"]
-["+"]
-["-"]
-["<<"]
-[">>"]
-["<"]
-["<="]
-[">"]
-[">="]
-["!="]
-["=="]
-["&","..."]
-["^","..."]
-["|","..."]
-["&&","..."]
-["?","...",":","..."]
-["||","..."]
-[")","..."]
-[",","..."]
-
-Candidates:
+Candidates: bm3-4
 [White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
 [White Terminal ++]
 [White Terminal --]
@@ -1671,7 +1592,7 @@ Candidates:
 [")","..."]
 [",","..."]
 
-Candidates:
+Candidates: bm3-5
 [White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
 [White Terminal ++]
 [White Terminal --]
@@ -1750,7 +1671,7 @@ Candidates:
 [")","..."]
 [",","..."]
 
-Candidates:
+Candidates: bm3-6
 [White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
 [White Terminal ++]
 [White Terminal --]
@@ -1829,7 +1750,7 @@ Candidates:
 [")","..."]
 [",","..."]
 
-Candidates:
+Candidates: bm3-7
 [White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
 [White Terminal ++]
 [White Terminal --]
@@ -1908,7 +1829,7 @@ Candidates:
 [")","..."]
 [",","..."]
 
-Candidates:
+Candidates: bm3-8
 [White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
 [White Terminal ++]
 [White Terminal --]
@@ -1987,7 +1908,86 @@ Candidates:
 [")","..."]
 [",","..."]
 
-Candidates:
+Candidates: bm3-9
+[White Terminal (,White Nonterminal option_argument_expression_list,White Terminal )]
+[White Terminal ++]
+[White Terminal --]
+[White Terminal ->,White Nonterminal general_identifier]
+[White Terminal .,White Nonterminal general_identifier]
+[White Terminal [,White Nonterminal expression,White Terminal ]]
+[White Terminal %=]
+[White Terminal &=]
+[White Terminal *=]
+[White Terminal +=]
+[White Terminal -=]
+[White Terminal /=]
+[White Terminal <<=]
+[White Terminal =]
+[White Terminal >>=]
+[White Terminal ^=]
+[White Terminal |=]
+[White Terminal %]
+[White Terminal *]
+[White Terminal /]
+[White Terminal +]
+[White Terminal -]
+[White Terminal <<]
+[White Terminal >>]
+[White Terminal <]
+[White Terminal <=]
+[White Terminal >]
+[White Terminal >=]
+[White Terminal !=]
+[White Terminal ==]
+[White Terminal &,White Nonterminal equality_expression]
+[White Terminal ^,White Nonterminal and_expression]
+[White Terminal |,White Nonterminal exclusive_or_expression]
+[White Terminal &&,White Nonterminal inclusive_or_expression]
+[White Terminal ?,White Nonterminal expression,White Terminal :,White Nonterminal conditional_expression]
+[White Terminal ||,White Nonterminal logical_and_expression]
+[White Terminal ),White Nonterminal scoped_statement]
+[White Terminal ,,White Nonterminal assignment_expression]
+
+["(","...",")"]
+["++"]
+["--"]
+["->","..."]
+[".","..."]
+["[","...","]"]
+["%="]
+["&="]
+["*="]
+["+="]
+["-="]
+["/="]
+["<<="]
+["="]
+[">>="]
+["^="]
+["|="]
+["%"]
+["*"]
+["/"]
+["+"]
+["-"]
+["<<"]
+[">>"]
+["<"]
+["<="]
+[">"]
+[">="]
+["!="]
+["=="]
+["&","..."]
+["^","..."]
+["|","..."]
+["&&","..."]
+["?","...",":","..."]
+["||","..."]
+[")","..."]
+[",","..."]
+
+Candidates: bm4-1 
 [White Terminal !]
 [White Terminal &]
 [White Terminal *]
@@ -2020,7 +2020,7 @@ Candidates:
 [";"]
 ["..."]
 
-Candidates:
+Candidates: bm4-2
 [White Terminal !]
 [White Terminal &]
 [White Terminal *]
@@ -2074,7 +2074,7 @@ Candidates:
 [";"]
 ["..."]
 
-Candidates:
+Candidates: bm4-3
 [White Terminal !]
 [White Terminal &]
 [White Terminal (,White Nonterminal expression,White Terminal )]
@@ -2138,7 +2138,7 @@ Candidates:
 [";"]
 ["{","...","}"]
 
-Candidates:
+Candidates: bm4-4
 [White Terminal !]
 [White Terminal &]
 [White Terminal (,White Nonterminal type_name,White Terminal ),White Nonterminal cast_expression]
@@ -2208,7 +2208,7 @@ Candidates:
 [";"]
 ["{","...","}"]
 
-Candidates:
+Candidates: bm4-5
 [White Terminal !]
 [White Terminal &]
 [White Terminal (,White Nonterminal type_name,White Terminal ),White Nonterminal cast_expression]
@@ -2284,7 +2284,7 @@ Candidates:
 ["while","(","...",")","..."]
 ["{","...","}"]
 
-Candidates:
+Candidates: bm4-6
 [White Terminal !]
 [White Terminal &]
 [White Terminal (,White Nonterminal type_name,White Terminal ),White Nonterminal cast_expression]
@@ -2360,7 +2360,7 @@ Candidates:
 ["while","(","...",")","..."]
 ["{","...","}"]
 
-Candidates:
+Candidates: bm4-7
 [White Terminal !]
 [White Terminal &]
 [White Terminal (,White Nonterminal type_name,White Terminal ),White Terminal {,White Nonterminal initializer_list,White Nonterminal option_comma,White Terminal }]
@@ -2438,7 +2438,7 @@ Candidates:
 ["while","(","...",")","..."]
 ["{","...","}"]
 
-Candidates:
+Candidates: bm4-8
 [White Terminal !]
 [White Terminal &]
 [White Terminal (,White Nonterminal type_name,White Terminal ),White Terminal {,White Nonterminal initializer_list,White Nonterminal option_comma,White Terminal }]
@@ -2518,7 +2518,7 @@ Candidates:
 ["while","(","...",")","..."]
 ["{","...","}"]
 
-Candidates:
+Candidates: bm4-9
 [White Terminal !]
 [White Terminal &]
 [White Terminal (,White Nonterminal type_name,White Terminal ),White Terminal {,White Nonterminal initializer_list,White Nonterminal option_comma,White Terminal }]
