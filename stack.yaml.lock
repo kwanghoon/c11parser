@@ -3,18 +3,11 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages:
-- completed:
-    hackage: yapb-0.2.6@sha256:335789dad8a833b8ec124bfcea100cf5f08d5dc2b5eead4b199abb00ccd21aa2,4795
-    pantry-tree:
-      size: 4100
-      sha256: 5eb4ce8a994061d44e45f5293b68e16d05a3674decf7d5ac93af185f4b5e52c8
-  original:
-    hackage: yapb-0.2.6
+packages: []
 snapshots:
 - completed:
-    size: 586106
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/20.yaml
-    sha256: 8699812d2b2c1f83d6ad1261de9cf628ed36a1cfc14f19d67188e005e7a3a39d
+    sha256: 1b1cb989b5728e6aee80592e84a3799d4b8c0fe1ea1f29dedfaf4cdd9c0f51c0
+    size: 649572
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/20/14.yaml
   original:
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/20.yaml
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/20/14.yaml
