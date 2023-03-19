@@ -1,4 +1,4 @@
-module Lexer(c_lexer, init_c_lexer_state, lexerSpec, Lexer_State) where
+module Lexer where -- (c_lexer, init_c_lexer_state, lexerSpec, Lexer_State)
 
 import Prelude hiding (EQ,GT,LT)
 import CommonParserUtil
@@ -21,7 +21,7 @@ skip = \text -> return Nothing
 -- | Utilities
 infixl 4 <|>
 
-x <|> y = paren (paren x ++ "|" ++ paren y)     -- "(" ++ x ++ "|" ++ y ++ ")"
+x <|> y = paren (x ++ "|" ++ y)     -- "(" ++ x ++ "|" ++ y ++ ")"
 
 zeroOrMore x = paren x ++ "*"     -- "(" ++ x ++ ")*"
 
@@ -121,22 +121,26 @@ preprocessing_number = opt "\\." ++ "[0-9]" ++
 
 -- | Character and string constants
 simple_escape_sequence =
-  "\\" ++ "[\\'\\\"?\\\\abfnrtv]"
+--  "\\" ++ "[\\'\\\"?\\\\abfnrtv]"
+  "\\\\" ++ "[\\\'\\\"?abfnrtv]"
 
 octal_escape_sequence =
-  "\\" ++ (octal_digit
-           <|>  octal_digit ++ octal_digit
-           <|>  octal_digit ++ octal_digit ++ octal_digit)
+  "\\\\(" ++ octal_digit ++
+        "|" ++ octal_digit ++ octal_digit ++
+        "|" ++  octal_digit ++ octal_digit ++ octal_digit ++ ")"
 
 hexadecimal_escape_sequence =
-  "\\x" ++ oneOrMore hexadecimal_digit
+  "\\\\x" ++ oneOrMore hexadecimal_digit
 
 escape_sequence =
-       simple_escape_sequence
+       simple_escape_sequence 
   <|>  octal_escape_sequence
   <|>  hexadecimal_escape_sequence
   <|>  universal_character_name
 
+char_or_escape_sequence =
+       escape_sequence
+  <|>  "[^\\\']"
 
 -- | Lexical analysis specification
 lexerSpec :: LexerSpec Token IO LPS
@@ -272,7 +276,7 @@ lexerSpec = LexerSpec
         --  error "These characters form a preprocessor number, but not a constant"),
         
         -- (("[LuU]" <|> "") ++ "'", mkFn CONSTANT ),
-        (opt "[LuU]" ++ "'[^']*'", mkFn CONSTANT ),   -- rewritten as "\"[^\"]*\""  Todo: \'
+        (opt "[LuU]" ++ "\'" ++ char_or_escape_sequence ++ "\'", mkFn CONSTANT ),   -- rewritten as "\"[^\"]*\""  Todo: \'
         
         -- (("[LuU]" <|> "" <|> "u8") ++ "\"",  mkFn STRING_LITERAL),  
         (opt ("[LuU]" <|> "u8") ++ "\"[^\"]*\"",  mkFn STRING_LITERAL),  -- rewritten as "\"[^\"]*\""  Todo: \"
