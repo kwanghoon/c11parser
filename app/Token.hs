@@ -105,7 +105,7 @@ data Token =
 
 tokenStrList :: [(Token,String)]
 tokenStrList =
-  [ (EOF, "EOF"),
+  [ (EOF, "$"),
     
     (NAME, "NAME"),
     (VARIABLE, "VARIABLE"), (TYPE, "TYPE"),

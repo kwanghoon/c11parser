@@ -237,7 +237,7 @@
 236: jump_statement -> break ;
 237: jump_statement -> return option_expression ;
 238: translation_unit_file -> external_declaration translation_unit_file
-239: translation_unit_file -> external_declaration EOF
+239: translation_unit_file -> external_declaration $
 240: external_declaration -> function_definition
 241: external_declaration -> declaration
 242: function_definition1 -> declaration_specifiers declarator_varname

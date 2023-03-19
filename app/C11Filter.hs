@@ -256,7 +256,7 @@ c11_filter_nonterminals =
       ProductionRule "jump_statement" [Terminal "break", Terminal ";"],
       ProductionRule "jump_statement" [Terminal "return", Nonterminal "option_expression", Terminal ";"],
       ProductionRule "translation_unit_file" [Nonterminal "external_declaration", Nonterminal "translation_unit_file"],
-      ProductionRule "translation_unit_file" [Nonterminal "external_declaration", Terminal "EOF"],
+      ProductionRule "translation_unit_file" [Nonterminal "external_declaration", Terminal "$"], -- Note: $ for EOF
       ProductionRule "external_declaration" [Nonterminal "function_definition"],
       ProductionRule "external_declaration" [Nonterminal "declaration"],
       ProductionRule "function_definition1" [Nonterminal "declaration_specifiers", Nonterminal "declarator_varname"],

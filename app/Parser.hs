@@ -1470,7 +1470,7 @@ c11ParserSpecList =
     --     {}
 
     ruleWithNoAction "translation_unit_file -> external_declaration translation_unit_file",
-    ruleWithNoAction "translation_unit_file -> external_declaration EOF", -- Todo: EOF???
+    ruleWithNoAction "translation_unit_file -> external_declaration $", -- Note: Delete $ (EOF)
 
 
     -- external_declaration:

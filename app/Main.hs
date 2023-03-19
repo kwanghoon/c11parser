@@ -35,7 +35,7 @@ _main [] = return ()
 _main (fileName:args) = 
   case fileName of
 --    "test" -> withArgs [] spec
-    "emacs" -> emacsServer (computeCand True)
+    "emacs" -> emacsServer (computeCand False)
     _ -> do _ <- doProcess True fileName
             _main args
 
