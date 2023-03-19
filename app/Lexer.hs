@@ -9,7 +9,7 @@ import Context
 import Text.Regex.TDFA
 import qualified Control.Monad.Trans.State.Lazy as ST
 import Control.Monad.Trans.Class
-
+import qualified Data.Map as Map
 
 mkFn :: Token -> LexAction Token IO LPS -- (String -> Maybe Token)
 mkFn tok = \text -> return $ Just tok
@@ -150,7 +150,7 @@ lexerSpec = LexerSpec
         ("/\\*[^(\\*)]*\\*/", skip),   -- rewritten /* as this. (Todo: multi-line comment bug!)
         ("//" ++ zeroOrMore "[^\n]" ++ "[\n]", skip), -- rewritten // as this
 
-        -- ("#" ++ zeroOrMore "^(\\n)" ++ "\\n", skip), -- ignore preprocessed lines Todo: Make it work!
+        ("#" ++ zeroOrMore "[^\n]" ++ "[\n]", skip), -- ignore preprocessed lines Todo: Make it work!
 
         -- -- A hack!
         -- ("\\(", mkFn LPAREN ),
@@ -216,51 +216,51 @@ lexerSpec = LexerSpec
         (";", mkFn SEMICOLON ),
         (",", mkFn COMMA ),
         ("\\.", mkFn DOT ),
-        ("_Alignas", mkFn ALIGNAS ),
-        ("_Alignof", mkFn ALIGNOF ),
-        ("_Atomic", mkFn ATOMIC ),
-        ("_Bool", mkFn BOOL ),
-        ("_Complex", mkFn COMPLEX ),
-        ("_Generic", mkFn GENERIC ),
-        ("_Imaginary", mkFn IMAGINARY ),
-        ("_Noreturn", mkFn NORETURN ),
-        ("_Static_assert", mkFn STATIC_ASSERT ),
-        ("_Thread_local", mkFn THREAD_LOCAL ),
-        ("auto", mkFn AUTO ),
-        ("break", mkFn BREAK ),
-        ("case", mkFn CASE ),
-        ("char", mkFn CHAR ),
-        ("const", mkFn CONST ),
-        ("continue", mkFn CONTINUE ),
-        ("default", mkFn DEFAULT ),
---        ("do", mkFn DO ),
-        ("double", mkFn DOUBLE ),
-        ("do", mkFn DO ),        
-        ("else", mkFn ELSE ),
-        ("enum", mkFn ENUM ),
-        ("extern", mkFn EXTERN ),
-        ("float", mkFn FLOAT ),
-        ("for", mkFn FOR ),
-        ("goto", mkFn GOTO ),
-        ("if", mkFn IF ),
-        ("inline", mkFn INLINE ),
-        ("int", mkFn INT ),
-        ("long", mkFn LONG ),
-        ("register", mkFn REGISTER ),
-        ("restrict", mkFn RESTRICT ),
-        ("return", mkFn RETURN ),
-        ("short", mkFn SHORT ),
-        ("signed", mkFn SIGNED ),
-        ("sizeof", mkFn SIZEOF ),
-        ("static", mkFn STATIC ),
-        ("struct", mkFn STRUCT ),
-        ("switch", mkFn SWITCH ),
-        ("typedef", mkFn TYPEDEF ),
-        ("union", mkFn UNION ),
-        ("unsigned", mkFn UNSIGNED),
-        ("void", mkFn VOID),
-        ("volatile", mkFn VOLATILE),
-        ("while", mkFn WHILE),
+--         ("_Alignas", mkFn ALIGNAS ),
+--         ("_Alignof", mkFn ALIGNOF ),
+--         ("_Atomic", mkFn ATOMIC ),
+--         ("_Bool", mkFn BOOL ),
+--         ("_Complex", mkFn COMPLEX ),
+--         ("_Generic", mkFn GENERIC ),
+--         ("_Imaginary", mkFn IMAGINARY ),
+--         ("_Noreturn", mkFn NORETURN ),
+--         ("_Static_assert", mkFn STATIC_ASSERT ),
+--         ("_Thread_local", mkFn THREAD_LOCAL ),
+--         ("auto", mkFn AUTO ),
+--         ("break", mkFn BREAK ),
+--         ("case", mkFn CASE ),
+--         ("char", mkFn CHAR ),
+--         ("const", mkFn CONST ),
+--         ("continue", mkFn CONTINUE ),
+--         ("default", mkFn DEFAULT ),
+-- --        ("do", mkFn DO ),
+--         ("double", mkFn DOUBLE ),
+--         ("do", mkFn DO ),        
+--         ("else", mkFn ELSE ),
+--         ("enum", mkFn ENUM ),
+--         ("extern", mkFn EXTERN ),
+--         ("float", mkFn FLOAT ),
+--         ("for", mkFn FOR ),
+--         ("goto", mkFn GOTO ),
+--         ("if", mkFn IF ),
+--         ("inline", mkFn INLINE ),
+--         ("int", mkFn INT ),
+--         ("long", mkFn LONG ),
+--         ("register", mkFn REGISTER ),
+--         ("restrict", mkFn RESTRICT ),
+--         ("return", mkFn RETURN ),
+--         ("short", mkFn SHORT ),
+--         ("signed", mkFn SIGNED ),
+--         ("sizeof", mkFn SIZEOF ),
+--         ("static", mkFn STATIC ),
+--         ("struct", mkFn STRUCT ),
+--         ("switch", mkFn SWITCH ),
+--         ("typedef", mkFn TYPEDEF ),
+--         ("union", mkFn UNION ),
+--         ("unsigned", mkFn UNSIGNED),
+--         ("void", mkFn VOID),
+--         ("volatile", mkFn VOLATILE),
+--         ("while", mkFn WHILE),
 
         -- A hack!
 
@@ -278,10 +278,65 @@ lexerSpec = LexerSpec
         (opt ("[LuU]" <|> "u8") ++ "\"[^\"]*\"",  mkFn STRING_LITERAL),  -- rewritten as "\"[^\"]*\""  Todo: \"
         
         
-        (identifier, mkFn NAME)
+        (identifier, keywordOrIdentifier)
       ]
 
   }
+
+keywordOrIdentifier text =
+  case Map.lookup text keywords of
+    Nothing  -> mkFn NAME text
+    Just tok -> mkFn tok text
+
+keywords :: Map.Map String Token
+keywords =
+  Map.fromList
+    [ ("_Alignas", ALIGNAS ),
+      ("_Alignof", ALIGNOF ),
+      ("_Atomic", ATOMIC ),
+      ("_Bool", BOOL ),
+      ("_Complex", COMPLEX ),
+      ("_Generic", GENERIC ),
+      ("_Imaginary", IMAGINARY ),
+      ("_Noreturn", NORETURN ),
+      ("_Static_assert", STATIC_ASSERT ),
+      ("_Thread_local", THREAD_LOCAL ),
+      ("auto", AUTO ),
+      ("break", BREAK ),
+      ("case", CASE ),
+      ("char", CHAR ),
+      ("const", CONST ),
+      ("continue", CONTINUE ),
+      ("default", DEFAULT ),
+      ("do", DO ),
+      ("double", DOUBLE ),
+      ("else", ELSE ),
+      ("enum", ENUM ),
+      ("extern", EXTERN ),
+      ("float", FLOAT ),
+      ("for", FOR ),
+      ("goto", GOTO ),
+      ("if", IF ),
+      ("inline", INLINE ),
+      ("int", INT ),
+      ("long", LONG ),
+      ("register", REGISTER ),
+      ("restrict", RESTRICT ),
+      ("return", RETURN ),
+      ("short", SHORT ),
+      ("signed", SIGNED ),
+      ("sizeof", SIZEOF ),
+      ("static", STATIC ),
+      ("struct", STRUCT ),
+      ("switch", SWITCH ),
+      ("typedef", TYPEDEF ),
+      ("union", UNION ),
+      ("unsigned", UNSIGNED),
+      ("void", VOID),
+      ("volatile", VOLATILE),
+      ("while", WHILE)
+    ]
+
 
 -- | An enriched lexer
 

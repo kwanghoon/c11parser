@@ -19,7 +19,7 @@ doProcess verbose fileName = do
   -- mapM_ (putStrLn . terminalToString) terminalList
   when verbose $ putStrLn "Parsing..."
   -- when verbose $ mapM_ (\(a,_,_)-> putStrLn $ show a) $ parserSpecList parserSpec
-  exprSeqAst <- parsing True parserSpec
+  exprSeqAst <- parsing False parserSpec
                   (LPS {lexer_state=init_c_lexer_state,
                         name_set=emptyContext},1,1,text)
                     c_lexer (fromToken (endOfToken lexerSpec))
