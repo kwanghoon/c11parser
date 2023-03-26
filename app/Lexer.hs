@@ -17,6 +17,21 @@ mkFn tok = \text -> return $ Just tok
 skip :: LexAction Token IO LPS          -- String -> Maybe Token
 skip = \text -> return Nothing
 
+multiLineCommentBegin :: LexAction Token IO LPS          -- String -> Maybe Token
+multiLineCommentBegin = \text0 -> -- /* 
+  do  (state_parm_, line, col, text) <- ST.get
+      let (newLine, newCol, newText) = mlc (tail (tail text)) line (col+2)
+      -- lift $ putStrLn text0
+      -- lift $ putStrLn (show line ++ ", " ++ show col ++ ", " ++ text)
+      -- lift $ putStrLn (show newLine ++ ", " ++ show newCol ++ ", " ++ newText)
+      ST.put (state_parm_, newLine, newCol, newText)
+      return Nothing
+
+  where
+    mlc ('*':'/':text) line col = (line, col+2, text)
+    mlc [] line col = (line, col, [])
+    mlc ('\n':text) line col = mlc text (line+1) col
+    mlc (_:text) line col = mlc text line (col+1)
 
 -- | Utilities
 infixl 4 <|>
@@ -151,7 +166,10 @@ lexerSpec = LexerSpec
       [
         (oneOrMore whitespace_char_no_newline, skip),
         ("\n", skip),
-        ("/\\*[^(\\*)]*\\*/", skip),   -- rewritten /* as this. (Todo: multi-line comment bug!)
+        -- ("/\\*[^(\\*)]*\\*/", skip),   -- rewritten /* as this. (Todo: multi-line comment bug!)
+        -- ("\\/\\*([\\s\\S]*?)\\*\\/", skip),   -- rewritten /* as this. (Todo: multi-line comment bug!)
+        ("/\\*", multiLineCommentBegin),
+
         ("//" ++ zeroOrMore "[^\n]" ++ "[\n]", skip), -- rewritten // as this
 
         ("#" ++ zeroOrMore "[^\n]" ++ "[\n]", skip), -- ignore preprocessed lines Todo: Make it work!
