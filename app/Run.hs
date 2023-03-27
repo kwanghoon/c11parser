@@ -8,12 +8,14 @@ import Terminal
 import Parser
 import Expr
 import Context
+import CPP
 
 import Control.Monad (when)
 import System.IO
 
 doProcess verbose fileName = do
-  text <- readFile fileName
+  text_ <- readFile fileName
+  let text = removeAttributes text_
   -- when (verbose) $ putStrLn "Lexing..."
   -- terminalList <- lexing lexerSpec text
   -- mapM_ (putStrLn . terminalToString) terminalList

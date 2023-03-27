@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.35.0.
+-- This file has been generated from package.yaml by hpack version 0.35.1.
 --
 -- see: https://github.com/sol/hpack
 
@@ -45,6 +45,7 @@ executable c11parser-exe
   other-modules:
       C11Filter
       Context
+      CPP
       Declarator
       Lexer
       Parser
@@ -74,6 +75,7 @@ test-suite c11parser-test
   other-modules:
       C11Filter
       Context
+      CPP
       Declarator
       Lexer
       Main
