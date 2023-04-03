@@ -11,27 +11,49 @@ import qualified Control.Monad.Trans.State.Lazy as ST
 import Control.Monad.Trans.Class
 import qualified Data.Map as Map
 
+-- import Debug.Trace (trace)
+
 mkFn :: Token -> LexAction Token IO LPS -- (String -> Maybe Token)
 mkFn tok = \text -> return $ Just tok
 
 skip :: LexAction Token IO LPS          -- String -> Maybe Token
 skip = \text -> return Nothing
 
+printAndSkip = \text -> do {- lift (putStrLn text); -} return Nothing
+
 multiLineCommentBegin :: LexAction Token IO LPS          -- String -> Maybe Token
-multiLineCommentBegin = \text0 -> -- /* 
-  do  (state_parm_, line, col, text) <- ST.get
-      let (newLine, newCol, newText) = mlc (tail (tail text)) line (col+2)
-      -- lift $ putStrLn text0
-      -- lift $ putStrLn (show line ++ ", " ++ show col ++ ", " ++ text)
-      -- lift $ putStrLn (show newLine ++ ", " ++ show newCol ++ ", " ++ newText)
-      ST.put (state_parm_, newLine, newCol, newText)
-      return Nothing
+multiLineCommentBegin = \text0 -> -- /*
+  --trace ("multiLineCommentBegin" ++ text0) $
+    do  (state_parm_, line, col, text) <- ST.get
+        let (newLine, newCol, newText) = mlc (tail (tail text)) line (col+2)
+        -- lift $ putStrLn text0
+        -- lift $ putStrLn (show line ++ ", " ++ show col ++ ", " ++ text)
+        -- lift $ putStrLn (show newLine ++ ", " ++ show newCol ++ ", " ++ newText)
+        ST.put (state_parm_, newLine, newCol, newText)
+        return Nothing
 
   where
-    mlc ('*':'/':text) line col = (line, col+2, text)
     mlc [] line col = (line, col, [])
+    mlc ('*':'/':text) line col = (line, col+2, text)
     mlc ('\n':text) line col = mlc text (line+1) col
+    mlc ('\r':text) line col = mlc text (line+1) col
     mlc (_:text) line col = mlc text line (col+1)
+
+init_string_literal :: LexAction Token IO LPS          -- String -> Maybe Token
+init_string_literal = \text0 -> -- /*
+  do  (state_parm_, line, col, text) <- ST.get
+      (newLine, newCol, newText, newStr) <- isl (tail text) line (col+1) ""
+      ST.put (state_parm_, newLine, newCol, newText)
+      -- lift (putStrLn ("init_string_literal: " ++ newStr) ) 
+      (mkFn STRING_LITERAL ("\"" ++ newStr ++ "\""))
+
+  where
+    isl [] line col accu = return (line, col, [], reverse accu)
+    isl ('\n':text) line col accu = return (line+1, col, text, reverse accu)
+    isl ('\r':text) line col accu = return (line+1, col, text, reverse accu)
+    isl ('\"':text) line col accu = return (line, col+1, text, reverse accu)
+    isl ('\\':ch:text) line col accu = isl text line (col+2) (ch : '\\' : accu)
+    isl (ch:text) line col accu = isl text line (col+1) (ch : accu)
 
 -- | Utilities
 infixl 4 <|>
@@ -71,7 +93,7 @@ identifier =
 
 -- | Whitespaces
 
-whitespace_char_no_newline = "[ \t\012\r]"
+whitespace_char_no_newline = "[ \t\n\r]" -- "[ \t\012\r]"
 
 -- | Integer constants
 
@@ -164,24 +186,22 @@ lexerSpec = LexerSpec
     endOfToken    = EOF,
     lexerSpecList =
       [
-        (oneOrMore whitespace_char_no_newline, skip),
-        ("\n", skip),
-        -- ("/\\*[^(\\*)]*\\*/", skip),   -- rewritten /* as this. (Todo: multi-line comment bug!)
-        -- ("\\/\\*([\\s\\S]*?)\\*\\/", skip),   -- rewritten /* as this. (Todo: multi-line comment bug!)
+        ("#" ++ zeroOrMore "[^\n]" ++ "[\n]", printAndSkip), -- ignore preprocessed lines Todo: Make it work!
+
+        (oneOrMore whitespace_char_no_newline, skip),  -- with newline!
+
         ("/\\*", multiLineCommentBegin),
 
-        ("//" ++ zeroOrMore "[^\n]" ++ "[\n]", skip), -- rewritten // as this
-
-        ("#" ++ zeroOrMore "[^\n]" ++ "[\n]", skip), -- ignore preprocessed lines Todo: Make it work!
+        ("//" ++ zeroOrMore "[^\n]" ++ "[\n]", skip ), -- rewritten // as this
 
         -- -- A hack!
         -- ("\\(", mkFn LPAREN ),
         -- (":", mkFn COLON ),
         -- ("\\+", mkFn PLUS ),
         
-        -- (integer_constant, mkFn CONSTANT),
-        -- (decimal_floating_constant, mkFn CONSTANT),
-        -- (hexadecimal_floating_constant, mkFn CONSTANT),
+        (decimal_floating_constant, mkFn CONSTANT),
+        (integer_constant, mkFn CONSTANT),
+        (hexadecimal_floating_constant, mkFn CONSTANT),
         
         -- -- (preprocessing_number,
         -- --  error "These characters form a preprocessor number, but not a constant"),
@@ -191,7 +211,16 @@ lexerSpec = LexerSpec
         
         -- -- (("[LuU]" <|> "" <|> "u8") ++ "\"",  mkFn STRING_LITERAL),  
         -- (opt ("[LuU]" <|> "u8") ++ "\"[^\"]*\"",  mkFn STRING_LITERAL),  -- rewritten as "\"[^\"]*\""  Todo: \"
+
+        -- (("[LuU]" <|> "") ++ "'", mkFn CONSTANT ),
+        (opt "[LuU]" ++ "\'" ++ char_or_escape_sequence ++ "\'", mkFn CONSTANT ),   -- rewritten as "\"[^\"]*\""  Todo: \'
         
+        -- (("[LuU]" <|> "" <|> "u8") ++ "\"",  mkFn STRING_LITERAL),  
+        -- (opt ("[LuU]" <|> "u8") ++ "\"[^(\\\")]*\"",  mkFn STRING_LITERAL),  -- rewritten as "\"[^\"]*\""  Todo: \"
+        -- (opt ("[LuU]" <|> "u8") ++ "\"(?:[^\"\\]|\\.)*\"",  mkFn STRING_LITERAL),  -- rewritten as "\"[^\"]*\""  Todo: \"
+        -- (opt ("[LuU]" <|> "u8") ++ "\"(\\.|[^\"])*\"",  mkFn STRING_LITERAL),  -- rewritten as "\"[^\"]*\""  Todo: \"
+        (opt ("[LuU]" <|> "u8") ++ "\"",  init_string_literal),  -- rewritten as "\"[^\"]*\""  Todo: \"
+	
         ("\\.\\.\\.", mkFn ELLIPSIS ),
         ("\\+=", mkFn ADD_ASSIGN ),
         ("-=", mkFn SUB_ASSIGN ),
@@ -284,31 +313,19 @@ lexerSpec = LexerSpec
 --         ("volatile", mkFn VOLATILE),
 --         ("while", mkFn WHILE),
 
-        -- A hack!
-
-        (integer_constant, mkFn CONSTANT),
-        (decimal_floating_constant, mkFn CONSTANT),
-        (hexadecimal_floating_constant, mkFn CONSTANT),
-        
         -- (preprocessing_number,
         --  error "These characters form a preprocessor number, but not a constant"),
-        
-        -- (("[LuU]" <|> "") ++ "'", mkFn CONSTANT ),
-        (opt "[LuU]" ++ "\'" ++ char_or_escape_sequence ++ "\'", mkFn CONSTANT ),   -- rewritten as "\"[^\"]*\""  Todo: \'
-        
-        -- (("[LuU]" <|> "" <|> "u8") ++ "\"",  mkFn STRING_LITERAL),  
-        (opt ("[LuU]" <|> "u8") ++ "\"[^\"]*\"",  mkFn STRING_LITERAL),  -- rewritten as "\"[^\"]*\""  Todo: \"
-        
-        
+	
         (identifier, keywordOrIdentifier)
       ]
 
   }
 
 keywordOrIdentifier text =
-  case Map.lookup text keywords of
-    Nothing  -> mkFn NAME text
-    Just tok -> mkFn tok text
+  -- trace ("keywordOrIdentifier : " ++ text) $
+    case Map.lookup text keywords of
+      Nothing  -> mkFn NAME text
+      Just tok -> mkFn tok text
 
 keywords :: Map.Map String Token
 keywords =
@@ -363,8 +380,13 @@ keywords =
 -- | An enriched lexer
 
 init_c_lexer_state = SRegular
-     
+
 c_lexer flag =
+  do terminal <- c_lexer' flag
+     -- lift (putStrLn (terminalToString terminal))
+     return terminal
+     
+c_lexer' flag =
   do (lps,line,col,text) <- ST.get
      let st = lexer_state lps
 

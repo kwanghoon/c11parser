@@ -12,22 +12,30 @@ cpp = do
 removeAttributes :: String -> String
 removeAttributes [] = []
 removeAttributes input =
-  let matches = [ ((input =~ pat) :: (String,String,String), act :: String ->String)
-                | (pat,act) <- patternActions ]
-  in firstMatch matches input
-    
-  where
-    patternActions = 
-      [ (pat_attribute, removeMatchedDblParentheses 0)
-      , (pat_restrict,\x->x) ]
-    pat_attribute = "__attribute__" :: String
-    pat_restrict = "__restrict" :: String
+  let input' = firstMatch (getMatches input) input
+  in  head input' : removeAttributes (tail input')
 
-    firstMatch [] input = head input : removeAttributes (tail input)
-    firstMatch ((("",matched,post),act):matches) input =
-      removeAttributes (act input)
-    firstMatch (((_,matched,post),act):matches) input =
-      firstMatch matches input
+getMatches:: String -> [(String,String->String)]
+getMatches input =
+  [ ((input =~ ("\\`" ++ pat)) :: String, act :: String ->String)
+  | (pat,act) <- patternActions ]
+
+firstMatch [] input = input
+firstMatch (("",_):matches)  input = firstMatch matches input
+firstMatch ((matched,act):_) input = act (drop (length matched) input) 
+
+
+-- Patterns for GCC extensions
+patternActions = 
+  [ (pat_attribute, removeMatchedDblParentheses 0)
+  , (pat_restrict,\x->x)
+  , (pat_asm, removeMatchedDblParentheses 0)
+  ]
+
+pat_attribute = "__attribute__" :: String
+pat_restrict = "__restrict" :: String
+pat_asm = "__asm__" :: String
+
 
 removeMatchedDblParentheses :: Int -> String -> String
 removeMatchedDblParentheses n ( '(':text ) =

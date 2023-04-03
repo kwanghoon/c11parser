@@ -15,7 +15,11 @@ data LPS = LPS { lexer_state :: Lexer_State, name_set :: Context }
 -- this condition is not detected and if the size limit is exceeded,
 -- its behaviour is undefined.
 
-emptyContext = Set.empty
+emptyContext =
+   -- gnu builtin types
+   Set.insert "_Float128"
+     (Set.insert "__builtin_va_list"
+       Set.empty)
 
 -- (* This declares [id] as a typedef name. *)
 -- let declare_typedefname id =
