@@ -27,6 +27,7 @@
  ProductionRule "postfix_expression" [Nonterminal "primary_expression"],
  ProductionRule "postfix_expression" [Nonterminal "postfix_expression", Terminal "[", Nonterminal "expression", Terminal "]"],
  ProductionRule "postfix_expression" [Nonterminal "postfix_expression", Terminal "(", Nonterminal "option_argument_expression_list", Terminal ")"],
+ ProductionRule "postfix_expression" [Terminal "__builtin_va_arg", Terminal "(", Nonterminal "assignment_expression", Terminal ",", Nonterminal "type_name", Terminal ")"],
  ProductionRule "postfix_expression" [Nonterminal "postfix_expression", Terminal ".", Nonterminal "general_identifier"],
  ProductionRule "postfix_expression" [Nonterminal "postfix_expression", Terminal "->", Nonterminal "general_identifier"],
  ProductionRule "postfix_expression" [Nonterminal "postfix_expression", Terminal "++"],
@@ -337,5 +338,5 @@
  ]
 ,
 TokenAttrs [("below_ELSE",(Nonassoc,1)),("ELSE",(Nonassoc,2))],
-ProdRuleAttrs [(228,(Nonassoc,1))],
+ProdRuleAttrs [(229,(Nonassoc,1))],
 "$")

@@ -370,6 +370,8 @@ c11ParserSpecList =
 
     ruleWithNoAction $ "postfix_expression -> postfix_expression ( " ++ nonTerminal "option" [ "argument_expression_list" ] ++ " )",
 
+    ruleWithNoAction $ "postfix_expression -> __builtin_va_arg ( assignment_expression , type_name )",
+    
     ruleWithNoAction "postfix_expression -> postfix_expression . general_identifier",
 
     ruleWithNoAction "postfix_expression -> postfix_expression -> general_identifier",

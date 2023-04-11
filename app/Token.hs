@@ -101,6 +101,8 @@ data Token =
   | SEMICOLON
   | COMMA
   | DOT
+  
+  | BUILTIN_VA_ARG
   deriving (Eq, Show)
 
 tokenStrList :: [(Token,String)]
@@ -200,7 +202,9 @@ tokenStrList =
     (RPAREN, ")"),
     (SEMICOLON, ";"),
     (COMMA, ","),
-    (DOT, ".")
+    (DOT, "."),
+
+    (BUILTIN_VA_ARG, "__builtin_va_arg")
   ]
 
 findTok tok [] = Nothing

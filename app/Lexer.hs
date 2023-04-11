@@ -373,7 +373,8 @@ keywords =
       ("unsigned", UNSIGNED),
       ("void", VOID),
       ("volatile", VOLATILE),
-      ("while", WHILE)
+      ("while", WHILE),
+      ("__builtin_va_arg", BUILTIN_VA_ARG)
     ]
 
 
