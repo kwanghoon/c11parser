@@ -42,19 +42,29 @@ multiLineCommentBegin = \text0 -> -- /*
 init_string_literal :: LexAction Token IO LPS          -- String -> Maybe Token
 init_string_literal = \text0 -> -- /*
   do  (state_parm_, line, col, text) <- ST.get
-      (newLine, newCol, newText, newStr) <- isl (tail text) line (col+1) ""
+      (newLine, newCol, newText, revNewStr) <- isl (tail text) line (col+1) ""
+      let newStr = reverse revNewStr
       ST.put (state_parm_, newLine, newCol, newText)
       -- lift (putStrLn ("init_string_literal: " ++ newStr) ) 
       (mkFn STRING_LITERAL ("\"" ++ newStr ++ "\""))
 
   where
-    isl [] line col accu = return (line, col, [], reverse accu)
-    isl ('\n':text) line col accu = return (line+1, col, text, reverse accu)
-    isl ('\r':text) line col accu = return (line+1, col, text, reverse accu)
-    isl ('\"':text) line col accu = return (line, col+1, text, reverse accu)
+    isl [] line col accu = return (line, col, [], accu)
+    isl ('\n':text) line col accu = return (line+1, 1, text, accu)
+    isl ('\r':text) line col accu = return (line+1, 1, text, accu)
+    isl ('\"':text) line col accu = asl text line (col+1) accu  -- return (line, col+1, text, reverse accu)
     isl ('\\':ch:text) line col accu = isl text line (col+2) (ch : '\\' : accu)
     isl (ch:text) line col accu = isl text line (col+1) (ch : accu)
 
+    -- remove space characters until an adjacent string literal
+    asl [] line col accu = return (line, col, [], accu)
+    asl (' ':text) line col accu = asl text line (col+1) accu
+    asl ('\t':text) line col accu = asl text line (col+1) accu
+    asl ('\n':text) line col accu = asl text (line+1) 1 accu
+    asl ('\r':text) line col accu = asl text (line+1) 1 accu
+    asl ('\"':text) line col accu = isl text line (col+1) accu
+    asl text line col accu = return (line, col, text, accu)
+    
 -- | Utilities
 infixl 4 <|>
 
