@@ -110,6 +110,9 @@ whitespace_char_no_newline = "[ \t\n\r]" -- "[ \t\012\r]"
 nonzero_digit = "[1-9]"
 decimal_constant = nonzero_digit ++ zeroOrMore digit
 
+binary_digit = "[0-1]"
+binary_constant = "0b" ++ zeroOrMore binary_digit
+
 octal_digit = "[0-7]"
 octal_constant = "0" ++ zeroOrMore octal_digit
 
@@ -128,6 +131,7 @@ integer_suffix =
 
 integer_constant =
        decimal_constant ++ opt integer_suffix
+  <|>  binary_constant ++ opt integer_suffix
   <|>  octal_constant ++ opt integer_suffix
   <|>  hexadecimal_constant ++ opt integer_suffix
 
