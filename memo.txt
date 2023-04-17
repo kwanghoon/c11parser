@@ -1,0 +1,72 @@
+
+1. __extension__ [DONE]
+
+lcc/build/decl.i 808
+
+__extension__ typedef struct
+
+
+lcc/build/stab.i  3159
+
+ ) ? 1 : 0), __extension__ ({ if (
+# 57 "src/stab.c"
+ 0
+# 57 "src/stab.c" 3 4
+ ) ; else __assert_fail (
+
+
+2. __restrict [DONE]
+
+lcc/build/eval.i 808
+
+extern double strtod (const char *__restrict __nptr,
+
+
+./data/minify_tests.c.i.collection.txt:c11parser-exe: NotFoundAction: State 164 : " at (6035, 13): STRING_LITERAL Line 6035 Column 47 : 
+
+            "    \"glossary\": { // comment\n"
+
+./data/parse_examples.c.i.collection.txt:c11parser-exe: NotFoundAction: State 164 : " at (5996, 33): STRING_LITERAL Line 5996 Column 37 : , test_name);
+
+    sprintf(test_path, "inputs/""%s", test_name);
+
+./data/unity.c.i.collection.txt:c11parser-exe: NotFoundAction: State 164 : " at (1149, 54): STRING_LITERAL Line 1149 Column 57 : ;
+
+static const char UnityStrDetail1Name[] = "Function" " ";
+
+
+3. __inline [DONE]
+
+lcc/build/stab.i  744
+
+static __inline __uint16_t
+
+
+4. main without return type [DONE]
+
+lcc/etc/lcc.c 74
+
+main(int argc, ...)
+==>
+int main(int argc, ...)
+
+
+5. va_arg and  __builtin_va_arg [?]
+
+
+lcc/src/output.c 72
+
+			case 'd': bp = outd(va_arg(ap, int), f, bp); break;
+
+int?? parse error!!
+
+lcc/cpp/cpp.c 288
+
+				cp = va_arg(ap, char *);
+
+char?? parse error!!
+
+
+6.
+
+
