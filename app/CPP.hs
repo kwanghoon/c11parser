@@ -28,6 +28,7 @@ firstMatch ((matched,act):_) input = act (drop (length matched) input)
 -- Patterns for GCC extensions
 patternActions = 
   [ (pat_attribute, removeMatchedDblParentheses 0)
+  , (pat_typeof, removeMatchedDblParentheses 0)
   , (pat_restrict,\x->x)
   , (pat_asm, removeMatchedDblParentheses 0)
   , (pat_extension,\x->x)
@@ -35,6 +36,7 @@ patternActions =
   ]
 
 pat_attribute = "__attribute__" :: String
+pat_typeof = "__typeof" :: String
 pat_restrict = "__restrict" :: String
 pat_asm = "__asm__" :: String
 pat_extension = "__extension__" :: String
