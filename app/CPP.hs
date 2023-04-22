@@ -32,6 +32,7 @@ patternActions =
   , (pat_restrict,\x->x)
   , (pat_asm, removeMatchedDblParentheses 0)
   , (pat_extension,\x->x)
+  , (pat_signed,\x->x)
   , (pat_inline,\x->x)
   ]
 
@@ -40,6 +41,7 @@ pat_typeof = "__typeof" :: String
 pat_restrict = "__restrict" :: String
 pat_asm = "__asm__" :: String
 pat_extension = "__extension__" :: String
+pat_signed = "__signed__" :: String
 pat_inline = "__inline" :: String
 
 
