@@ -1,0 +1,4 @@
+Remove GCC extensions
+Parsing...
+parse time:   0.05s
+c11parser-exe: NotFoundAction: State 0 : $ at (11, 1): $ Line 12 Column 1 : 

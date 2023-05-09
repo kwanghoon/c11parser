@@ -1,0 +1,480 @@
+Remove GCC extensions
+Parsing...
+parse time: 25195.81s
+0 Terminal typedef Nonterminal list_ge1_type_specifier_nonunique_declaration_specifier 1
+5 Terminal ( Nonterminal save_context Nonterminal declarator Terminal ) 1
+5 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 249
+5 Terminal NAME Terminal VARIABLE 1134
+6 Terminal ( Nonterminal save_context Nonterminal declarator Terminal ) 4
+6 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 8
+6 Terminal NAME Terminal VARIABLE 226
+8 Terminal NAME Terminal TYPE 152
+8 Terminal _Bool 1
+8 Terminal char 146
+8 Terminal const 8
+8 Terminal double 7
+8 Terminal float 2
+8 Terminal int 591
+8 Terminal long 30
+8 Terminal struct 34
+8 Terminal unsigned 10
+8 Terminal void 322
+17 Terminal char 2
+17 Terminal double 2
+17 Terminal int 37
+17 Terminal long 14
+17 Terminal short 2
+22 Terminal NAME Terminal VARIABLE 662
+23 Terminal $ 1
+23 Terminal NAME Terminal TYPE 1
+23 Terminal _Bool 1
+23 Terminal char 33
+23 Terminal enum Nonterminal option_general_identifier Terminal { Nonterminal enumerator_list Nonterminal option_comma Terminal } 22
+23 Terminal extern 1234
+23 Terminal int 36
+23 Terminal static 49
+23 Terminal struct 97
+23 Terminal typedef Nonterminal list_eq1_type_specifier_unique_declaration_specifier 130
+23 Terminal typedef Nonterminal list_ge1_type_specifier_nonunique_declaration_specifier 107
+23 Terminal union 3
+23 Terminal void 19
+25 Terminal char 2
+25 Terminal int 5
+25 Terminal struct 1
+26 Terminal TYPE 946
+45 Terminal NAME Terminal VARIABLE 9
+54 Terminal NAME Terminal TYPE 87
+54 Terminal char 4
+54 Terminal enum Nonterminal general_identifier 1
+54 Terminal enum Nonterminal option_general_identifier Terminal { Nonterminal enumerator_list Nonterminal option_comma Terminal } 1
+54 Terminal int 22
+54 Terminal long 22
+54 Terminal short 1
+54 Terminal signed 4
+54 Terminal struct 25
+54 Terminal union 11
+54 Terminal unsigned 54
+54 Terminal void 5
+54 Terminal volatile 1
+59 Terminal = Nonterminal c_initializer 96
+60 Terminal ; 1551
+61 Terminal , Nonterminal init_declarator_declarator_varname 55
+63 Terminal ( Nonterminal save_context Nonterminal option_identifier_list Terminal ) 11
+63 Terminal ( Nonterminal scoped_parameter_type_list Terminal ) 1092
+63 Terminal [ Nonterminal option_type_qualifier_list Nonterminal option_assignment_expression Terminal ] 149
+64 Terminal NAME Terminal VARIABLE 525
+65 Terminal TYPE 178
+65 Terminal VARIABLE 8049
+70 Terminal ; 238
+89 Terminal { Nonterminal struct_declaration_list Terminal } 131
+93 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 78
+93 Terminal NAME Terminal VARIABLE 93
+94 Terminal { Nonterminal option_block_item_list Terminal } 115
+95 Terminal int 3
+95 Terminal struct 2
+98 Terminal { Nonterminal enumerator_list Nonterminal option_comma Terminal } 23
+103 Terminal NAME Terminal TYPE 28
+103 Terminal char 344
+103 Terminal int 1
+103 Terminal struct 34
+103 Terminal union 2
+103 Terminal void 35
+106 Terminal char 10
+106 Terminal double 6
+106 Terminal int 111
+106 Terminal long 32
+106 Terminal short 20
+106 Terminal unsigned 1
+108 Terminal ( Nonterminal expression Terminal ) 9
+108 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 2
+108 Terminal - 5
+108 Terminal CONSTANT 23
+108 Terminal NAME Terminal VARIABLE 54
+108 Terminal STRING_LITERAL 2
+108 Terminal { Nonterminal initializer_list Nonterminal option_comma Terminal } 1
+110 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 8
+110 Terminal NAME Terminal VARIABLE 47
+113 Terminal ( Nonterminal save_context Nonterminal option_identifier_list Terminal ) 1
+113 Terminal ( Nonterminal scoped_parameter_type_list Terminal ) 201
+113 Terminal [ Nonterminal option_type_qualifier_list Nonterminal option_assignment_expression Terminal ] 17
+115 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 18
+116 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 107
+116 Terminal const 12
+126 Terminal NAME Terminal TYPE 29
+126 Terminal char 18
+126 Terminal enum Nonterminal general_identifier 1
+126 Terminal int 24
+126 Terminal long 3
+126 Terminal short 4
+126 Terminal struct 25
+126 Terminal union 1
+126 Terminal unsigned 18
+126 Terminal void 8
+131 Terminal NAME Terminal VARIABLE 23
+133 Terminal char 3
+133 Terminal int 2
+133 Terminal unsigned 1
+133 Terminal void 1
+135 Terminal char 34
+135 Terminal int 147
+135 Terminal long 17
+135 Terminal short 25
+135 Terminal unsigned 78
+137 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 88
+147 Terminal ( Nonterminal option_argument_expression_list Terminal ) 995
+147 Terminal ++ 61
+147 Terminal -- 35
+147 Terminal -> Nonterminal general_identifier 465
+147 Terminal . Nonterminal general_identifier 76
+147 Terminal [ Nonterminal expression Terminal ] 80
+149 Terminal ( Nonterminal expression Terminal ) 34
+149 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 3
+149 Terminal * 5
+149 Terminal ++ Nonterminal unary_expression 23
+149 Terminal -- Nonterminal unary_expression 2
+149 Terminal CONSTANT 108
+149 Terminal NAME Terminal VARIABLE 311
+151 Terminal % 5
+151 Terminal * 28
+151 Terminal / 98
+152 Terminal + 86
+152 Terminal - 157
+153 Terminal << 52
+153 Terminal >> 20
+154 Terminal < 117
+154 Terminal <= 88
+154 Terminal > 209
+154 Terminal >= 40
+155 Terminal != 55
+155 Terminal == 172
+156 Terminal & Nonterminal equality_expression 35
+158 Terminal | Nonterminal exclusive_or_expression 33
+159 Terminal && Nonterminal inclusive_or_expression 261
+160 Terminal ? Nonterminal expression Terminal : Nonterminal conditional_expression 91
+160 Terminal || Nonterminal logical_and_expression 93
+165 Terminal ! 4
+165 Terminal ( Nonterminal expression Terminal ) 269
+165 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 176
+165 Terminal * 32
+165 Terminal - 1
+165 Terminal CONSTANT 111
+165 Terminal NAME Terminal TYPE 16
+165 Terminal NAME Terminal VARIABLE 389
+165 Terminal char 18
+165 Terminal const 2
+165 Terminal int 95
+165 Terminal long 78
+165 Terminal signed 1
+165 Terminal sizeof Terminal ( Nonterminal type_name Terminal ) 72
+165 Terminal struct 12
+165 Terminal unsigned 13
+165 Terminal void 64
+168 Terminal NAME Terminal VARIABLE 26
+169 Terminal NAME Terminal VARIABLE 20
+170 Terminal ( Nonterminal expression Terminal ) 18
+170 Terminal ( Nonterminal type_name Terminal ) 82
+170 Terminal * 1
+179 Terminal VARIABLE 2836
+181 Terminal &= 1
+181 Terminal += 29
+181 Terminal -= 7
+181 Terminal = 582
+186 Terminal NAME Terminal TYPE 133
+186 Terminal NAME Terminal VARIABLE 8
+186 Terminal _Bool 3
+186 Terminal char 211
+186 Terminal const 218
+186 Terminal double 7
+186 Terminal int 351
+186 Terminal long 18
+186 Terminal struct 162
+186 Terminal unsigned 21
+186 Terminal void 169
+187 Terminal ) 1293
+188 Terminal ( Nonterminal expression Terminal ) 3
+188 Terminal CONSTANT 138
+188 Terminal sizeof Nonterminal unary_expression 1
+191 Terminal ) 22
+198 Terminal NAME Terminal TYPE 162
+198 Terminal char 115
+198 Terminal const 5
+198 Terminal enum Nonterminal general_identifier 2
+198 Terminal int 259
+198 Terminal long 15
+198 Terminal short 7
+198 Terminal signed 2
+198 Terminal struct 121
+198 Terminal union 7
+198 Terminal unsigned 55
+198 Terminal void 14
+198 Terminal } 131
+200 Terminal ( Nonterminal save_context Nonterminal declarator Terminal ) 13
+200 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 163
+200 Terminal NAME Terminal VARIABLE 707
+201 Terminal ( Nonterminal expression Terminal ) 8
+201 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 13
+201 Terminal * 25
+201 Terminal ++ Nonterminal unary_expression 1
+201 Terminal NAME Terminal TYPE 16
+201 Terminal NAME Terminal VARIABLE 627
+201 Terminal _Bool 1
+201 Terminal break Terminal ; 77
+201 Terminal case Nonterminal constant_expression Terminal : Nonterminal statement 76
+201 Terminal char 34
+201 Terminal const 1
+201 Terminal continue Terminal ; 5
+201 Terminal default Terminal : Nonterminal statement 7
+201 Terminal goto Nonterminal general_identifier Terminal ; 1
+201 Terminal int 43
+201 Terminal register 7
+201 Terminal return Nonterminal option_expression Terminal ; 105
+201 Terminal static 4
+201 Terminal struct 51
+201 Terminal unsigned 1
+201 Terminal } 456
+204 Terminal , Nonterminal enumerator 805
+206 Terminal = Nonterminal constant_expression 52
+208 Terminal int 1
+208 Terminal short 1
+230 Terminal ( Nonterminal option_scoped_parameter_type_list Terminal ) 3
+231 Terminal [ Nonterminal option_assignment_expression Terminal ] 1
+235 Terminal & 21
+235 Terminal ( Nonterminal expression Terminal ) 55
+235 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 7
+235 Terminal * 19
+235 Terminal - 6
+235 Terminal CONSTANT 115
+235 Terminal NAME Terminal VARIABLE 616
+235 Terminal STRING_LITERAL 52
+235 Terminal sizeof Nonterminal unary_expression 1
+236 Terminal ( Nonterminal expression Terminal ) 1
+236 Terminal - 3
+236 Terminal -- Nonterminal unary_expression 4
+236 Terminal CONSTANT 26
+236 Terminal NAME Terminal VARIABLE 42
+236 Terminal sizeof Nonterminal unary_expression 4
+237 Terminal NAME Terminal VARIABLE 76
+238 Terminal NAME Terminal VARIABLE 465
+242 Terminal ( Nonterminal expression Terminal ) 85
+242 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 1
+242 Terminal CONSTANT 34
+242 Terminal NAME Terminal VARIABLE 8
+242 Terminal sizeof Terminal ( Nonterminal type_name Terminal ) 8
+246 Terminal ( Nonterminal expression Terminal ) 8
+246 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 1
+246 Terminal * 1
+246 Terminal CONSTANT 127
+246 Terminal NAME Terminal VARIABLE 102
+246 Terminal sizeof Terminal ( Nonterminal type_name Terminal ) 1
+246 Terminal sizeof Nonterminal unary_expression 3
+249 Terminal ( Nonterminal expression Terminal ) 26
+249 Terminal CONSTANT 46
+252 Terminal ( Nonterminal expression Terminal ) 88
+252 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 39
+252 Terminal * 1
+252 Terminal - 3
+252 Terminal CONSTANT 259
+252 Terminal NAME Terminal VARIABLE 63
+252 Terminal sizeof Nonterminal unary_expression 1
+257 Terminal & 6
+257 Terminal ( Nonterminal expression Terminal ) 14
+257 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 10
+257 Terminal - 19
+257 Terminal CONSTANT 147
+257 Terminal NAME Terminal VARIABLE 30
+257 Terminal sizeof Nonterminal unary_expression 1
+260 Terminal ( Nonterminal expression Terminal ) 6
+260 Terminal CONSTANT 29
+262 Terminal ( Nonterminal expression Terminal ) 15
+262 Terminal CONSTANT 17
+262 Terminal NAME Terminal VARIABLE 1
+263 Terminal ! 62
+263 Terminal ( Nonterminal expression Terminal ) 75
+263 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 2
+263 Terminal * 14
+263 Terminal CONSTANT 1
+263 Terminal NAME Terminal VARIABLE 107
+264 Terminal ! 3
+264 Terminal ( Nonterminal expression Terminal ) 53
+264 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 1
+264 Terminal * 4
+264 Terminal NAME Terminal VARIABLE 32
+265 Terminal ( Nonterminal expression Terminal ) 15
+265 Terminal CONSTANT 13
+265 Terminal NAME Terminal VARIABLE 49
+265 Terminal STRING_LITERAL 14
+267 Terminal ) 1072
+269 Terminal ) Nonterminal cast_expression 299
+276 Terminal * 1
+276 Terminal NAME Terminal TYPE 13
+276 Terminal NAME Terminal VARIABLE 17
+276 Terminal char 63
+276 Terminal int 3
+276 Terminal long 1
+276 Terminal unsigned 1
+276 Terminal void 1
+279 Terminal ! 2
+279 Terminal & 2
+279 Terminal ( Nonterminal expression Terminal ) 29
+279 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 12
+279 Terminal * 21
+279 Terminal - 11
+279 Terminal CONSTANT 206
+279 Terminal NAME Terminal VARIABLE 331
+279 Terminal STRING_LITERAL 4
+279 Terminal sizeof Nonterminal unary_expression 1
+291 Terminal , Nonterminal option_designation Nonterminal c_initializer 1
+292 Terminal NAME Terminal VARIABLE 1
+298 Terminal ( Nonterminal save_context Nonterminal abstract_declarator Terminal ) 3
+298 Terminal ( Nonterminal save_context Nonterminal declarator Terminal ) 4
+298 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 1358
+298 Terminal NAME Terminal VARIABLE 912
+299 Terminal ) 12
+300 Terminal , Terminal ... 57
+300 Terminal , Nonterminal parameter_declaration 1505
+302 Terminal , Nonterminal var_name 5
+305 Terminal ] 166
+313 Terminal ; 895
+314 Terminal , Nonterminal struct_declarator 17
+316 Terminal : Nonterminal constant_expression 12
+319 Terminal : Nonterminal statement 1
+320 Terminal do Nonterminal scoped_statement Terminal while Terminal ( Nonterminal expression Terminal ) Terminal ; 93
+320 Terminal for Terminal ( Nonterminal option_expression Terminal ; Nonterminal option_expression Terminal ; Nonterminal option_expression Terminal ) Nonterminal scoped_statement 37
+320 Terminal if Terminal ( Nonterminal expression Terminal ) Nonterminal scoped_statement 385
+320 Terminal if Terminal ( Nonterminal expression Terminal ) Nonterminal scoped_statement Terminal else Nonterminal scoped_statement 66
+320 Terminal switch Terminal ( Nonterminal expression Terminal ) Nonterminal scoped_statement 8
+320 Terminal while Terminal ( Nonterminal expression Terminal ) Nonterminal scoped_statement 19
+320 Terminal { Nonterminal option_block_item_list Terminal } 341
+325 Terminal , Nonterminal assignment_expression 1
+331 Terminal ; 1003
+332 Terminal : Nonterminal statement 7
+334 Terminal - 1
+334 Terminal CONSTANT 96
+335 Terminal NAME Terminal VARIABLE 1
+336 Terminal ; 14
+337 Terminal ; 96
+338 Terminal ( Nonterminal expression Terminal ) 26
+338 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 2
+338 Terminal - 3
+338 Terminal CONSTANT 7
+338 Terminal NAME Terminal VARIABLE 84
+339 Terminal } 23
+340 Terminal NAME Terminal VARIABLE 805
+341 Terminal ( Nonterminal expression Terminal ) 24
+341 Terminal - 2
+341 Terminal CONSTANT 20
+341 Terminal NAME Terminal VARIABLE 6
+346 Terminal CONSTANT 1
+351 Terminal ) 995
+352 Terminal , Nonterminal assignment_expression 959
+353 Terminal ] 80
+357 Terminal * 4
+357 Terminal / 1
+366 Terminal : Nonterminal conditional_expression 91
+368 Terminal NAME Terminal VARIABLE 1
+369 Terminal ( Nonterminal expression Terminal ) 96
+369 Terminal * 1
+369 Terminal - 44
+369 Terminal CONSTANT 108
+369 Terminal NAME Terminal VARIABLE 49
+369 Terminal sizeof Terminal ( Nonterminal type_name Terminal ) 1
+373 Terminal ) 82
+377 Terminal } 1
+386 Terminal NAME Terminal VARIABLE 987
+391 Terminal ... 57
+391 Terminal NAME Terminal TYPE 487
+391 Terminal _Bool 2
+391 Terminal char 167
+391 Terminal const 225
+391 Terminal double 3
+391 Terminal float 1
+391 Terminal int 452
+391 Terminal long 8
+391 Terminal struct 121
+391 Terminal unsigned 13
+391 Terminal void 26
+392 Terminal NAME Terminal VARIABLE 5
+398 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 1
+398 Terminal NAME Terminal VARIABLE 16
+399 Terminal CONSTANT 12
+400 Terminal NAME Terminal VARIABLE 1
+404 Terminal ( Nonterminal expression Terminal ) Nonterminal scoped_statement 385
+404 Terminal ( Nonterminal expression Terminal ) Nonterminal scoped_statement Terminal else Nonterminal scoped_statement 66
+405 Terminal ( Nonterminal expression Terminal ) Nonterminal scoped_statement 8
+406 Terminal ( Nonterminal expression Terminal ) Nonterminal scoped_statement 19
+408 Terminal ( Nonterminal option_expression Terminal ; Nonterminal option_expression Terminal ; Nonterminal option_expression Terminal ) Nonterminal scoped_statement 37
+410 Terminal NAME Terminal VARIABLE 4
+410 Terminal break Terminal ; 2
+411 Terminal : Nonterminal statement 97
+412 Terminal ; 1
+415 Terminal ; 134
+419 Terminal char 1
+419 Terminal int 2
+420 Terminal ) 3
+422 Terminal ] 1
+426 Terminal ) 3
+429 Terminal & 27
+429 Terminal ( Nonterminal expression Terminal ) 35
+429 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 18
+429 Terminal * 3
+429 Terminal - 12
+429 Terminal -- Nonterminal unary_expression 4
+429 Terminal CONSTANT 245
+429 Terminal NAME Terminal VARIABLE 481
+429 Terminal STRING_LITERAL 127
+429 Terminal sizeof Nonterminal unary_expression 7
+431 Terminal ( Nonterminal expression Terminal ) 30
+431 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 3
+431 Terminal * 3
+431 Terminal - 2
+431 Terminal CONSTANT 14
+431 Terminal NAME Terminal VARIABLE 24
+431 Terminal STRING_LITERAL 15
+442 Terminal CONSTANT 1
+445 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 7
+455 Terminal ! 50
+455 Terminal ( Nonterminal expression Terminal ) 43
+455 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 6
+455 Terminal * 29
+455 Terminal -- Nonterminal unary_expression 9
+455 Terminal NAME Terminal VARIABLE 314
+456 Terminal * 6
+456 Terminal NAME Terminal VARIABLE 2
+457 Terminal ( Nonterminal expression Terminal ) 3
+457 Terminal * 1
+457 Terminal NAME Terminal VARIABLE 15
+458 Terminal ( Nonterminal expression Terminal ) 2
+458 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 3
+458 Terminal * 15
+458 Terminal NAME Terminal VARIABLE 236
+458 Terminal break Terminal ; 16
+458 Terminal continue Terminal ; 9
+458 Terminal return Nonterminal option_expression Terminal ; 29
+459 Terminal while Terminal ( Nonterminal expression Terminal ) Terminal ; 93
+460 Terminal NAME Terminal VARIABLE 34
+462 Terminal * 8
+462 Terminal NAME Terminal VARIABLE 45
+462 Terminal break Terminal ; 1
+462 Terminal case Nonterminal constant_expression Terminal : Nonterminal statement 21
+483 Terminal ) Nonterminal scoped_statement 385
+483 Terminal ) Nonterminal scoped_statement Terminal else Nonterminal scoped_statement 66
+484 Terminal ) Nonterminal scoped_statement 8
+485 Terminal ) Nonterminal scoped_statement 19
+487 Terminal ( Nonterminal expression Terminal ) Terminal ; 93
+489 Terminal ; Nonterminal option_expression Terminal ; Nonterminal option_expression Terminal ) Nonterminal scoped_statement 37
+503 Terminal * 1
+503 Terminal CONSTANT 92
+505 Terminal ( Nonterminal expression Terminal ) 2
+505 Terminal * 6
+505 Terminal NAME Terminal VARIABLE 29
+512 Terminal else Nonterminal scoped_statement 66
+515 Terminal ) Terminal ; 93
+517 Terminal ; Nonterminal option_expression Terminal ) Nonterminal scoped_statement 37
+519 Terminal ; 93
+521 Terminal ++ Nonterminal unary_expression 2
+521 Terminal -- Nonterminal unary_expression 1
+521 Terminal NAME Terminal VARIABLE 33
+525 Terminal ) Nonterminal scoped_statement 37
+c11parser-exe: This is normally terminated after collection. Don't panic!
+CallStack (from HasCallStack):
+  error, called at src/parserlib/CommonParserUtil.hs:356:21 in yapb-0.2.8-Gd5E3bvNG8VFkFXDVRAxuf:CommonParserUtil

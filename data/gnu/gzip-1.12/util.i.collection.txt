@@ -1,0 +1,4 @@
+Remove GCC extensions
+Parsing...
+parse time: 8603.02s
+c11parser-exe: NotFoundAction: State 165 : { at (7341, 14): { Line 7341 Column 15 :  int __res; if (sizeof (

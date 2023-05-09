@@ -17,14 +17,15 @@ data LPS = LPS { lexer_state :: Lexer_State, name_set :: Context }
 
 emptyContext =
    -- gnu builtin types
-   Set.insert "_Float128"
-    (Set.insert "_Float64"
-     (Set.insert "_Float32"
-      (Set.insert "_Float128x"
-       (Set.insert "_Float64x"
-	(Set.insert "_Float32x"
-         (Set.insert "__builtin_va_list"
-          Set.empty))))))
+   Set.insert "_Bool"
+    (Set.insert "_Float128"
+     (Set.insert "_Float64"
+      (Set.insert "_Float32"
+       (Set.insert "_Float128x"
+	(Set.insert "_Float64x"
+	 (Set.insert "_Float32x"
+	  (Set.insert "__builtin_va_list"
+	   Set.empty)))))))
 
 -- (* This declares [id] as a typedef name. *)
 -- let declare_typedefname id =

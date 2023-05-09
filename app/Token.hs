@@ -116,7 +116,7 @@ tokenStrList =
     (ALIGNAS, "_Alignas"), (ALIGNOF, "_Alignof"),
     (ATOMIC, "_Atomic"),
     (AUTO, "auto"),
-    (BOOL, "bool"),
+    (BOOL, "_Bool"),
     (BREAK, "break"),
     (CASE, "case"),
     (CHAR, "char"),

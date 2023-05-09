@@ -70,3 +70,14 @@ char?? parse error!!
 6.
 
 
+=====
+gnu
+
+
+bc/storage.c
+
+  if ((((__typeof (__n)) 0 < (__typeof (__n)) -1 || (__builtin_constant_p (__n) && (__n) > 0)) && __builtin_constant_p ((((long unsigned int) (__n)) <= (sz) / (sizeof (char)))) && (((long unsigned int) (__n)) <= (sz) / (sizeof (char)))))
+
+
+c11parser-exe: NotFoundAction: State 367 : 0 at (1215, 26): CONSTANT Line 1215 Column 27 :  < (__typeof (__n)) -1 || (__builtin_constant_p (__n) && (__n) > 0)) && __builtin_constant_p ((((long unsigned int) (__n)) <= (sz) / (sizeof (char)))) && (((long unsigned int) (__n)) <= (sz) / (sizeof (char)))))
+

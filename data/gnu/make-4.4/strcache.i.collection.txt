@@ -1,0 +1,4 @@
+Remove GCC extensions
+Parsing...
+parse time: 9509.31s
+c11parser-exe: NotFoundAction: State 235 : struct at (7700, 43): struct Line 7700 Column 49 :  strcache

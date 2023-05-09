@@ -1,0 +1,4 @@
+Remove GCC extensions
+Parsing...
+parse time: 11735.43s
+c11parser-exe: NotFoundAction: State 235 : struct at (6892, 28): struct Line 6892 Column 34 :  uparams

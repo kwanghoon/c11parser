@@ -63,7 +63,17 @@ init_string_literal = \text0 -> -- /*
     asl ('\n':text) line col accu = asl text (line+1) 1 accu
     asl ('\r':text) line col accu = asl text (line+1) 1 accu
     asl ('\"':text) line col accu = isl text line (col+1) accu
+    -- Todo: Processing # 497 "help.c" between two strings.
+    -- Todo: Lose a chance to process it by the C lexer specification!
+    -- Todo: Perhaps this is not a good place to combine adjacent strings.
+    asl ('#':text) line 1 accu = skipSharp text line 2 accu 
+    asl ('#':text) line col accu = return (line, col, text, accu)
     asl text line col accu = return (line, col, text, accu)
+
+    skipSharp [] line col accu = return (line, col, [], accu)
+    skipSharp ('\n':text) line col accu = asl text (line+1) 1 accu
+    skipSharp ('\r':text) line col accu = asl text (line+1) 1 accu
+    skipSharp (_:text) line col accu = skipSharp text line (col+1) accu
     
 -- | Utilities
 infixl 4 <|>
