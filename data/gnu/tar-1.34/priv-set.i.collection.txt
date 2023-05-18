@@ -1,0 +1,22 @@
+Remove GCC extensions
+Parsing...
+parse time:   0.23s
+0 Terminal extern 1
+5 Terminal NAME Terminal VARIABLE 2
+8 Terminal inline 2
+8 Terminal int 2
+23 Terminal $ 1
+23 Terminal extern 1
+63 Terminal ( Nonterminal scoped_parameter_type_list Terminal ) 2
+65 Terminal VARIABLE 2
+94 Terminal { Nonterminal option_block_item_list Terminal } 2
+149 Terminal CONSTANT 2
+186 Terminal void 2
+187 Terminal ) 2
+201 Terminal return Nonterminal option_expression Terminal ; 2
+201 Terminal } 2
+338 Terminal - 2
+415 Terminal ; 2
+c11parser-exe: This is normally terminated after collection. Don't panic!
+CallStack (from HasCallStack):
+  error, called at src/parserlib/CommonParserUtil.hs:356:21 in yapb-0.2.8-Gd5E3bvNG8VFkFXDVRAxuf:CommonParserUtil

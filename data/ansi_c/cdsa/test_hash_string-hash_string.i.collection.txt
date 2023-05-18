@@ -1,0 +1,70 @@
+Remove GCC extensions
+Parsing...
+parse time:   1.31s
+0 Terminal typedef Nonterminal list_ge1_type_specifier_nonunique_declaration_specifier 1
+5 Terminal NAME Terminal VARIABLE 2
+6 Terminal NAME Terminal VARIABLE 3
+8 Terminal NAME Terminal TYPE 1
+8 Terminal char 1
+23 Terminal $ 1
+23 Terminal NAME Terminal TYPE 2
+23 Terminal typedef Nonterminal list_ge1_type_specifier_nonunique_declaration_specifier 2
+26 Terminal TYPE 3
+54 Terminal int 1
+54 Terminal long 2
+59 Terminal = Nonterminal c_initializer 2
+60 Terminal ; 3
+63 Terminal ( Nonterminal scoped_parameter_type_list Terminal ) 2
+64 Terminal NAME Terminal VARIABLE 1
+65 Terminal VARIABLE 11
+70 Terminal ; 3
+93 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 1
+93 Terminal NAME Terminal VARIABLE 1
+94 Terminal { Nonterminal option_block_item_list Terminal } 1
+103 Terminal void 2
+106 Terminal int 2
+106 Terminal unsigned 1
+108 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 1
+108 Terminal CONSTANT 1
+133 Terminal char 1
+137 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 1
+147 Terminal ++ 1
+149 Terminal NAME Terminal VARIABLE 2
+152 Terminal + 2
+153 Terminal << 1
+165 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 1
+165 Terminal CONSTANT 1
+165 Terminal NAME Terminal VARIABLE 1
+165 Terminal const 1
+165 Terminal void 1
+179 Terminal VARIABLE 5
+181 Terminal = 1
+186 Terminal const 2
+187 Terminal ) 2
+201 Terminal ( Nonterminal expression Terminal ) 1
+201 Terminal NAME Terminal VARIABLE 1
+201 Terminal const 1
+201 Terminal register 1
+201 Terminal return Nonterminal option_expression Terminal ; 1
+201 Terminal } 2
+246 Terminal * 1
+246 Terminal NAME Terminal VARIABLE 1
+249 Terminal CONSTANT 1
+267 Terminal ) 3
+269 Terminal ) Nonterminal cast_expression 2
+279 Terminal ( Nonterminal expression Terminal ) 1
+298 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 2
+320 Terminal while Terminal ( Nonterminal expression Terminal ) Nonterminal scoped_statement 1
+320 Terminal { Nonterminal option_block_item_list Terminal } 1
+331 Terminal ; 2
+338 Terminal NAME Terminal VARIABLE 1
+369 Terminal ( Nonterminal expression Terminal ) 1
+369 Terminal NAME Terminal VARIABLE 1
+386 Terminal NAME Terminal VARIABLE 2
+406 Terminal ( Nonterminal expression Terminal ) Nonterminal scoped_statement 1
+415 Terminal ; 1
+457 Terminal * 1
+485 Terminal ) Nonterminal scoped_statement 1
+c11parser-exe: This is normally terminated after collection. Don't panic!
+CallStack (from HasCallStack):
+  error, called at src/parserlib/CommonParserUtil.hs:356:21 in yapb-0.2.8-Gd5E3bvNG8VFkFXDVRAxuf:CommonParserUtil

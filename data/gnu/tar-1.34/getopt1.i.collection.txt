@@ -1,0 +1,69 @@
+Remove GCC extensions
+Parsing...
+parse time:  16.41s
+0 Terminal extern 1
+5 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 2
+5 Terminal NAME Terminal VARIABLE 20
+8 Terminal char 2
+8 Terminal int 16
+22 Terminal NAME Terminal VARIABLE 20
+23 Terminal $ 1
+23 Terminal enum Nonterminal option_general_identifier Terminal { Nonterminal enumerator_list Nonterminal option_comma Terminal } 1
+23 Terminal extern 17
+23 Terminal int 4
+23 Terminal struct 3
+45 Terminal NAME Terminal VARIABLE 2
+60 Terminal ; 22
+63 Terminal ( Nonterminal scoped_parameter_type_list Terminal ) 14
+64 Terminal NAME Terminal VARIABLE 8
+65 Terminal VARIABLE 139
+89 Terminal { Nonterminal struct_declaration_list Terminal } 3
+94 Terminal { Nonterminal option_block_item_list Terminal } 4
+98 Terminal { Nonterminal enumerator_list Nonterminal option_comma Terminal } 1
+103 Terminal char 14
+103 Terminal struct 12
+116 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 16
+116 Terminal const 8
+126 Terminal const 2
+126 Terminal int 1
+131 Terminal NAME Terminal VARIABLE 1
+133 Terminal char 2
+137 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 2
+147 Terminal ( Nonterminal option_argument_expression_list Terminal ) 4
+165 Terminal char 2
+179 Terminal VARIABLE 26
+186 Terminal int 14
+187 Terminal ) 14
+198 Terminal char 2
+198 Terminal enum Nonterminal general_identifier 1
+198 Terminal int 11
+198 Terminal } 3
+200 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 6
+200 Terminal NAME Terminal VARIABLE 11
+201 Terminal return Nonterminal option_expression Terminal ; 4
+201 Terminal } 4
+204 Terminal , Nonterminal enumerator 2
+235 Terminal NAME Terminal VARIABLE 4
+269 Terminal ) Nonterminal cast_expression 2
+298 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 57
+298 Terminal NAME Terminal VARIABLE 18
+300 Terminal , Nonterminal parameter_declaration 61
+313 Terminal ; 17
+338 Terminal NAME Terminal VARIABLE 4
+339 Terminal } 1
+340 Terminal NAME Terminal VARIABLE 2
+351 Terminal ) 4
+352 Terminal , Nonterminal assignment_expression 26
+369 Terminal NAME Terminal VARIABLE 2
+386 Terminal NAME Terminal VARIABLE 57
+391 Terminal char 14
+391 Terminal const 26
+391 Terminal int 16
+391 Terminal struct 5
+415 Terminal ; 4
+429 Terminal ( Nonterminal type_name Terminal ) Nonterminal cast_expression 2
+429 Terminal CONSTANT 8
+429 Terminal NAME Terminal VARIABLE 16
+c11parser-exe: This is normally terminated after collection. Don't panic!
+CallStack (from HasCallStack):
+  error, called at src/parserlib/CommonParserUtil.hs:356:21 in yapb-0.2.8-Gd5E3bvNG8VFkFXDVRAxuf:CommonParserUtil

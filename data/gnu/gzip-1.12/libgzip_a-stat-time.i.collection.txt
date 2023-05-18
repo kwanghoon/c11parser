@@ -1,0 +1,4 @@
+Remove GCC extensions
+Parsing...
+parse time: 334.69s
+c11parser-exe: NotFoundAction: State 111 : [ at (1756, 24): [ Line 1756 Column 25 : [__maybe_unused__]] struct stat const *st)

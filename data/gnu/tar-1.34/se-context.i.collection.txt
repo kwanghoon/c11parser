@@ -1,0 +1,41 @@
+Remove GCC extensions
+Parsing...
+parse time:   0.91s
+0 Terminal typedef Nonterminal list_eq1_type_specifier_unique_declaration_specifier 1
+5 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 5
+5 Terminal NAME Terminal VARIABLE 6
+6 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 1
+6 Terminal NAME Terminal VARIABLE 1
+8 Terminal NAME Terminal TYPE 1
+8 Terminal char 5
+8 Terminal const 4
+8 Terminal int 4
+8 Terminal void 1
+23 Terminal $ 1
+23 Terminal extern 11
+23 Terminal typedef Nonterminal list_eq1_type_specifier_unique_declaration_specifier 1
+26 Terminal TYPE 2
+54 Terminal NAME Terminal TYPE 1
+54 Terminal struct 1
+60 Terminal ; 11
+63 Terminal ( Nonterminal scoped_parameter_type_list Terminal ) 6
+64 Terminal NAME Terminal VARIABLE 7
+65 Terminal TYPE 10
+65 Terminal VARIABLE 14
+70 Terminal ; 2
+89 Terminal { Nonterminal struct_declaration_list Terminal } 1
+103 Terminal char 5
+113 Terminal ( Nonterminal scoped_parameter_type_list Terminal ) 5
+126 Terminal void 1
+186 Terminal NAME Terminal TYPE 10
+186 Terminal const 1
+187 Terminal ) 11
+198 Terminal } 1
+200 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 1
+298 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 5
+300 Terminal , Nonterminal parameter_declaration 4
+313 Terminal ; 1
+391 Terminal const 4
+c11parser-exe: This is normally terminated after collection. Don't panic!
+CallStack (from HasCallStack):
+  error, called at src/parserlib/CommonParserUtil.hs:356:21 in yapb-0.2.8-Gd5E3bvNG8VFkFXDVRAxuf:CommonParserUtil

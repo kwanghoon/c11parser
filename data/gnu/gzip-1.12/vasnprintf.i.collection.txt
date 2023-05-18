@@ -1,0 +1,4 @@
+Remove GCC extensions
+Parsing...
+parse time: 7900.22s
+c11parser-exe: NotFoundAction: State 409 : [ at (5877, 21): [ Line 5877 Column 22 : [__fallthrough__]];

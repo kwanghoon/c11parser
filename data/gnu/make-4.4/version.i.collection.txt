@@ -1,0 +1,16 @@
+Remove GCC extensions
+Parsing...
+parse time:   0.14s
+0 Terminal const 1
+5 Terminal * Nonterminal option_type_qualifier_list Nonterminal option_pointer 2
+8 Terminal char 2
+23 Terminal $ 1
+23 Terminal const 1
+59 Terminal = Nonterminal c_initializer 2
+60 Terminal ; 2
+64 Terminal NAME Terminal VARIABLE 2
+65 Terminal VARIABLE 2
+108 Terminal STRING_LITERAL 2
+c11parser-exe: This is normally terminated after collection. Don't panic!
+CallStack (from HasCallStack):
+  error, called at src/parserlib/CommonParserUtil.hs:356:21 in yapb-0.2.8-Gd5E3bvNG8VFkFXDVRAxuf:CommonParserUtil

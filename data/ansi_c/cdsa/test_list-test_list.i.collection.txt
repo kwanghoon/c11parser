@@ -1,0 +1,4 @@
+Remove GCC extensions
+Parsing...
+parse time: 2005.73s
+c11parser-exe: NotFoundAction: State 165 : { at (3390, 13): { Line 3390 Column 14 :  const typeof(((TestStruct*)0)->node) *__mptr = (a); (TestStruct*) ((char*)__mptr - 

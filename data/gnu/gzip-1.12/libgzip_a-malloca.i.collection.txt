@@ -1,0 +1,4 @@
+Remove GCC extensions
+Parsing...
+parse time: 689.20s
+c11parser-exe: NotFoundAction: State 235 : long at (1964, 36): long Line 1964 Column 40 : ),

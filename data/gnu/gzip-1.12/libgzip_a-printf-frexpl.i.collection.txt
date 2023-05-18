@@ -1,0 +1,4 @@
+Remove GCC extensions
+Parsing...
+parse time: 4132.62s
+c11parser-exe: NotFoundAction: State 165 : { at (3454, 20): { Line 3454 Column 21 :  fpucw_t _cw; ; _cw; }),  (void)({ fpucw_t _ncw = ((oldcw & ~0x0300) | 0x300); ; }));
