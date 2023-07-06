@@ -16,7 +16,7 @@
  - Analysis result on tutorial programs : c11-analysis-results.txt
 
 ### Prototype editor for supporting the syntax completion
- - Note that the editor for MySmallBasic is reused for C11.
+ - Note that the editor for MySmallBasic is reused for C11. (We are planning to use Emacs as was inthe implementation for SCP 2023)
  - https://github.com/kwanghoon/MySmallBasic
  - run java com.coducation.smallbasic.gui.MySmallBasicGUI
  - Enter Ctrl+Space for syntax completion.
