@@ -16,7 +16,10 @@
  - Analysis result on tutorial programs : c11-analysis-results.txt
 
 ### Prototype editor for supporting the syntax completion
- - Note that the editor for MySmallBasic is reused for C11. (We are planning to use Emacs as was in the implementation for SCP 2023)
+ - Note that the editor for MySmallBasic is reused for C11.
+   * IMPORTANT: Change Line 53 of src/com/coducation/smallbasic/syncomp/SocketCommunication.java to point to the C11 database as follows:
+     * syntaxManager = new SyntaxCompletionDataManager(System.getProperty("user.dir") + "/data/c11/c11-data-collection.txt"); 
+   * We are planning to use Emacs as was in the implementation for SCP 2023.
  - https://github.com/kwanghoon/MySmallBasic
  - run java com.coducation.smallbasic.gui.MySmallBasicGUI
  - Enter Ctrl+Space for syntax completion.
