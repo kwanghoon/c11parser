@@ -1,7 +1,7 @@
 # c11parser
 
 
-## For supplementary materials for submission to SLE 2023 
+## Supplementary materials for submission to SAC 2023 
 
 ### C11 grammar and automaton
  - production rules : prod_rules.txt
