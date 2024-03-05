@@ -26,7 +26,7 @@ doProcess verbose fileName = do
   -- putStrLn text
   
   exprSeqAst <-
-    parsing False parserSpec
+    parsing verbose parserSpec
       (LPS {lexer_state=init_c_lexer_state, name_set=emptyContext},1,1,text)
          c_lexer (fromToken (endOfToken lexerSpec))
   when (verbose) $ putStrLn "Done."
