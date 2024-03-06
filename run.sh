@@ -10,8 +10,10 @@ while read line; do
     date
     echo "$line"
     filename=$(basename "$line")
-    logfilename="$filename"".collection.txt"
-    stack exec -- c11parser-exe "$line" &> "$dir""/$logfilename"
+    # logfilename="$filename"".collection.txt"
+    logfilename="$filename"".textual_collection.txt"
+    # stack exec -- c11parser-exe "$line" &> "$dir""/$logfilename"
+    stack exec -- c11parser-exe "$line" > "$dir""/$logfilename"
     # for test
     # cat "$line" &> "$logfilename"
 done < "$file"
